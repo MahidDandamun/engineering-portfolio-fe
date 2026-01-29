@@ -24,8 +24,8 @@ const containerVariants = {
 export function ProjectGrid({ projects, isLoading, emptyMessage = "No projects found" }: ProjectGridProps) {
 	if (isLoading) {
 		return (
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-				{[...Array(6)].map((_, i) => (
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8">
+				{[...Array(8)].map((_, i) => (
 					<ProjectCardSkeleton key={i} />
 				))}
 			</div>
@@ -52,7 +52,7 @@ export function ProjectGrid({ projects, isLoading, emptyMessage = "No projects f
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
-			className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+			className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8"
 		>
 			{projects.map((project, index) => (
 				<ProjectCard key={project._id} project={project} index={index} />

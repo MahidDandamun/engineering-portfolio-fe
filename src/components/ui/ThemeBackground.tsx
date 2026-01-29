@@ -13,41 +13,15 @@ export function ThemeBackground() {
 			<div
 				className={`absolute inset-0 transition-all duration-700 ${
 					isGhibli
-						? "bg-linear-to-br from-sky-50 via-amber-50/50 to-emerald-50/30"
-						: "bg-linear-to-br from-slate-950 via-purple-950/20 to-slate-950"
+						? "bg-[image:var(--gradient-warm)] opacity-80"
+						: "bg-[image:var(--gradient-cursed)] opacity-90"
 				}`}
 			/>
 
-			{/* Ghibli Light Mode - Authentic Studio Ghibli atmosphere */}
-			{isGhibli && (
-				<>
-					{/* Layered Ghibli clouds - like Castle in the Sky */}
-					<motion.div
-						className="absolute top-10 -left-20"
-						animate={{ x: [0, 150, 0] }}
-						transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-					>
-						<svg width="200" height="100" viewBox="0 0 200 100">
-							<ellipse cx="40" cy="70" rx="40" ry="30" fill="white" opacity="0.8" />
-							<ellipse cx="80" cy="60" rx="50" ry="35" fill="white" opacity="0.9" />
-							<ellipse cx="130" cy="65" rx="45" ry="30" fill="white" opacity="0.85" />
-							<ellipse cx="170" cy="70" rx="35" ry="25" fill="white" opacity="0.75" />
-						</svg>
-					</motion.div>
-					<motion.div
-						className="absolute top-32 right-0"
-						animate={{ x: [0, -200, 0] }}
-						transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-					>
-						<svg width="250" height="120" viewBox="0 0 250 120">
-							<ellipse cx="50" cy="80" rx="50" ry="35" fill="white" opacity="0.7" />
-							<ellipse cx="110" cy="70" rx="60" ry="40" fill="white" opacity="0.85" />
-							<ellipse cx="180" cy="75" rx="55" ry="35" fill="white" opacity="0.8" />
-							<ellipse cx="230" cy="80" rx="40" ry="30" fill="white" opacity="0.7" />
-						</svg>
-					</motion.div>
+			{/* Ghibli Light Mode - Handled by GhibliBackground.tsx now */}
+			{/* We keep this clean to allow the new GhibliBackground component to handle the decor */}
 
-					{/* Soft Ghibli-style gradient orbs */}
+			{/* JJK Dark Mode - Cursed Energy Atmosphere */}
 					<motion.div
 						className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
 						style={{ background: "radial-gradient(circle, #ef4444 0%, transparent 70%)" }}

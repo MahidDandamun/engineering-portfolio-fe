@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryProvider, AuthProvider, ThemeProvider } from "@/context";
 import { Navbar, Footer } from "@/components/layout";
-import { ThemeBackground, Toaster } from "@/components/ui";
+import { ThemeBackground, Toaster, GhibliBackground } from "@/components/ui";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,6 +50,7 @@ export default function RootLayout({
 						<AuthProvider>
 							{/* Animated Background */}
 							<ThemeBackground />
+							<GhibliBackground />
 
 							{/* Toast Notifications */}
 							<Toaster />

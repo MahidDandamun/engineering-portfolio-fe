@@ -10,3 +10,4 @@ export { ThemeToggle } from "./ThemeToggle";
 export { ThemeBackground } from "./ThemeBackground";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { Toaster } from "./Toaster";
+export { GhibliBackground } from "./GhibliBackground";

@@ -237,13 +237,15 @@ export function ThemedComponent() {
 
 **Unique Dual-Theme System**:
 
-- **Light Mode (Ghibli)**: Warm, whimsical colors inspired by Studio Ghibli films
-    - Primary: `#e74c3c` (Red)
-    - Secondary: `#f39c12` (Orange)
-    - Accent: `#3498db` (Blue)
-    - Background: `#fef9f3` (Warm cream)
-    - Text: `#2d3436` (Dark gray)
-    - Borders: `#ffeaa7` (Soft yellow)
+- **Light Mode (Spirited Away)**: Soft, warm colors inspired by Studio Ghibli's Spirited Away
+    - Primary: `#E8A5A5` (Soft coral pink - Chihiro's outfit)
+    - Secondary: `#8B9D83` (Sage green - natural, calming)
+    - Accent: `#C17B6C` (Warm terracotta - bathhouse accents)
+    - Background: `#F5F0E8` (Soft cream - bathhouse walls)
+    - Background Secondary: `#EBF0E4` (Pale sage - natural calm)
+    - Text: `#3A3632` (Deep warm gray - readable)
+    - Muted Red: `#B85C5C` (Softer red accent)
+    - Wood Tones: `#8B6F47` (Warm wood accents)
 
 - **Dark Mode (JJK)**: Purple/blue gradients inspired by Jujutsu Kaisen anime
     - Primary: `#8b5cf6` (Purple)

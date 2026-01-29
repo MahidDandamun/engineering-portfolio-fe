@@ -5,39 +5,40 @@
    =================================== */
 
 :root {
-	/* Light Mode - Ghibli Style (Primary: Red, Yellow, Blue - Rainbow) */
-	--background: #fef9f3;
-	--background-secondary: #fff8ed;
-	--foreground: #2d3436;
-	--foreground-secondary: #636e72;
+	/* Light Mode - Spirited Away Inspired */
+	--background: #f5f0e8; /* Soft cream - bathhouse walls */
+	--background-secondary: #ebf0e4; /* Pale sage - natural calm */
+	--foreground: #3a3632; /* Deep warm gray - readable */
+	--foreground-secondary: #6b645e; /* Medium warm gray */
 
-	/* Ghibli Rainbow Colors */
-	--primary: #e74c3c; /* Red - Ponyo red */
-	--primary-light: #ff6b6b;
-	--secondary: #f39c12; /* Yellow - Totoro umbrella */
-	--secondary-light: #f1c40f;
-	--accent: #3498db; /* Blue - Howl's sky */
-	--accent-light: #74b9ff;
+	/* Spirited Away Color Palette */
+	--primary: #e8a5a5; /* Soft coral pink - Chihiro's outfit */
+	--primary-light: #f0bcb7;
+	--secondary: #8b9d83; /* Sage green - natural, calming */
+	--secondary-light: #a8b89e;
+	--accent: #c17b6c; /* Warm terracotta - bathhouse accents */
+	--accent-light: #d99a8c;
 
-	/* Ghibli Soft Pastels */
-	--ghibli-pink: #fdcbcb;
-	--ghibli-peach: #ffeaa7;
-	--ghibli-sky: #a8d8ea;
-	--ghibli-grass: #b8e994;
-	--ghibli-cloud: #ffffff;
+	/* Spirited Away Natural Tones */
+	--ghibli-pink: #e8a5a5; /* Chihiro pink */
+	--ghibli-sage: #8b9d83; /* Calming sage */
+	--ghibli-terracotta: #c17b6c; /* Warm clay */
+	--ghibli-wood: #8b6f47; /* Warm wood */
+	--ghibli-cream: #f5f0e8; /* Soft cream */
+	--ghibli-muted-red: #b85c5c; /* Softer red accent */
 
-	/* Gradients */
-	--gradient-primary: linear-gradient(135deg, #e74c3c 0%, #f39c12 50%, #3498db 100%);
-	--gradient-rainbow: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71, #3498db, #9b59b6);
-	--gradient-soft: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+	/* Soft Gradients */
+	--gradient-primary: linear-gradient(135deg, #e8a5a5 0%, #c17b6c 50%, #8b9d83 100%);
+	--gradient-warm: linear-gradient(135deg, #f5f0e8 0%, #ebf0e4 100%);
+	--gradient-soft: linear-gradient(135deg, #f0bcb7 0%, #e8a5a5 100%);
 
-	/* Glass effect */
-	--glass-bg: rgba(255, 255, 255, 0.7);
-	--glass-border: rgba(255, 255, 255, 0.5);
+	/* Glass effect - softer */
+	--glass-bg: rgba(245, 240, 232, 0.85);
+	--glass-border: rgba(139, 157, 131, 0.3);
 
-	/* Shadows - Ghibli soft */
-	--shadow-color: rgba(231, 76, 60, 0.1);
-	--shadow-lg: 0 20px 60px rgba(231, 76, 60, 0.15), 0 10px 20px rgba(243, 156, 18, 0.1);
+	/* Shadows - very soft */
+	--shadow-color: rgba(193, 123, 108, 0.08);
+	--shadow-lg: 0 20px 40px rgba(139, 157, 131, 0.1), 0 10px 20px rgba(232, 165, 165, 0.08);
 }
 
 .dark {
@@ -83,6 +84,35 @@ body {
 	transition:
 		background-color 0.5s ease,
 		color 0.3s ease;
+	position: relative;
+}
+
+/* Ghibli Background Pattern (Light Mode Only) */
+body:not(.dark)::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100vh;
+	background-image:
+		linear-gradient(135deg, transparent 0%, rgba(139, 157, 131, 0.02) 50%, transparent 100%),
+		repeating-linear-gradient(
+			90deg,
+			rgba(232, 165, 165, 0.03) 0px,
+			transparent 2px,
+			transparent 40px,
+			rgba(139, 157, 131, 0.03) 42px
+		);
+	pointer-events: none;
+	z-index: 0;
+	opacity: 0.5;
+}
+
+/* Content wrapper to sit above background */
+body > * {
+	position: relative;
+	z-index: 1;
 }
 
 /* ===================================
