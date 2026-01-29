@@ -18,8 +18,20 @@ const nextConfig: NextConfig = {
 				hostname: "images.unsplash.com",
 				pathname: "/**",
 			},
+			{
+				protocol: "https",
+				hostname: "cdn.simpleicons.org",
+				pathname: "/**",
+			},
+			{
+				protocol: "https",
+				hostname: "cdn.jsdelivr.net",
+				pathname: "/**",
+			},
 		],
 	},
+	reactStrictMode: true,
+	poweredByHeader: false,
 };
 
 export default nextConfig;

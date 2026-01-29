@@ -409,7 +409,7 @@ html {
    =================================== */
 
 .prose-custom {
-	color: var(--foreground-secondary);
+	color: var(--foreground);
 }
 
 .prose-custom h1,
@@ -425,16 +425,19 @@ html {
 .prose-custom p {
 	margin-bottom: 1.5rem;
 	line-height: 1.8;
+	color: var(--foreground);
 }
 
 .prose-custom a {
 	color: var(--primary);
 	text-decoration: none;
 	transition: color 0.2s;
+	font-weight: 500;
 }
 
 .prose-custom a:hover {
 	color: var(--primary-light);
+	text-decoration: underline;
 }
 
 .prose-custom code {
@@ -443,6 +446,7 @@ html {
 	border-radius: 0.375rem;
 	font-size: 0.875em;
 	color: var(--accent);
+	font-weight: 500;
 }
 
 .prose-custom pre {
@@ -468,14 +472,16 @@ html {
 
 .prose-custom li {
 	margin: 0.5rem 0;
+	color: var(--foreground);
 }
 
 .prose-custom blockquote {
 	border-left: 3px solid var(--primary);
 	padding-left: 1rem;
 	margin: 1.5rem 0;
-	color: var(--foreground-secondary);
+	color: var(--foreground);
 	font-style: italic;
+	opacity: 0.9;
 }
 
 .prose-custom img {

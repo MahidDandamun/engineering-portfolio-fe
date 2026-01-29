@@ -10,6 +10,7 @@ import { ArrowLeft, Github, ExternalLink, Calendar, Tag } from "lucide-react";
 import { PageWrapper, Section } from "@/components/layout";
 import { Button, Badge, Skeleton, ErrorBoundary } from "@/components/ui";
 import { useProject } from "@/hooks";
+import { useTheme } from "@/context";
 import { categoryLabels, categoryColors, difficultyLabels, difficultyColors } from "@/types";
 import { formatDate, cn, normalizeImageUrl } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ interface ProjectPageProps {
 
 export default function ProjectPage({ params }: ProjectPageProps) {
 	const { slug } = use(params);
+	const { isGhibli } = useTheme();
 	const { data, isLoading, error } = useProject(slug);
 	const project = data?.data;
 	const safeThumbnail = normalizeImageUrl(project?.thumbnail);
@@ -51,11 +53,18 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 			<PageWrapper>
 				<Section className="pt-32">
 					<div className="max-w-4xl mx-auto text-center space-y-6">
-						<div className="w-24 h-24 mx-auto rounded-full bg-white/5 flex items-center justify-center">
+						<div
+							className={cn(
+								"w-24 h-24 mx-auto rounded-full flex items-center justify-center",
+								isGhibli ? "bg-slate-200" : "bg-white/5",
+							)}
+						>
 							<span className="text-4xl">😕</span>
 						</div>
-						<h1 className="text-3xl font-bold text-white">Project Not Found</h1>
-						<p className="text-white/60">
+						<h1 className={cn("text-3xl font-bold", isGhibli ? "text-slate-900" : "text-white")}>
+							Project Not Found
+						</h1>
+						<p className={isGhibli ? "text-slate-600" : "text-white/60"}>
 							The project you&apos;re looking for doesn&apos;t exist or has been removed.
 						</p>
 						<Link href="/projects">
@@ -109,15 +118,32 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 								</div>
 
 								{/* Title */}
-								<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
+								<h1
+									className={cn(
+										"text-4xl sm:text-5xl lg:text-6xl font-bold",
+										isGhibli ? "text-slate-900" : "text-white",
+									)}
+								>
 									{project.title}
 								</h1>
 
 								{/* Summary */}
-								<p className="text-xl text-white/60 leading-relaxed">{project.summary}</p>
+								<p
+									className={cn(
+										"text-xl leading-relaxed",
+										isGhibli ? "text-slate-700" : "text-white/60",
+									)}
+								>
+									{project.summary}
+								</p>
 
 								{/* Meta */}
-								<div className="flex flex-wrap items-center gap-6 text-white/50">
+								<div
+									className={cn(
+										"flex flex-wrap items-center gap-6",
+										isGhibli ? "text-slate-600" : "text-white/50",
+									)}
+								>
 									<div className="flex items-center gap-2">
 										<Calendar className="w-4 h-4" />
 										<span>{formatDate(project.createdAt)}</span>
@@ -172,6 +198,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.2 }}
 									className="relative aspect-video rounded-2xl overflow-hidden border border-white/10"
+									style={{ willChange: "transform" }}
 								>
 									<Image
 										src={safeThumbnail}
@@ -181,6 +208,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 										unoptimized={safeThumbnail.startsWith("http")}
 										className="object-cover"
 										priority
+										loading="eager"
 									/>
 									<div
 										className={cn(
@@ -217,13 +245,30 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 									className="space-y-6"
 								>
 									{/* Tech Stack */}
-									<div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-										<h3 className="text-lg font-semibold text-white mb-4">Tech Stack</h3>
+									<div
+										className={cn(
+											"p-6 rounded-2xl border",
+											isGhibli ? "bg-white/60 border-slate-200/50" : "bg-white/5 border-white/10",
+										)}
+									>
+										<h3
+											className={cn(
+												"text-lg font-semibold mb-4",
+												isGhibli ? "text-slate-900" : "text-white",
+											)}
+										>
+											Tech Stack
+										</h3>
 										<div className="flex flex-wrap gap-2">
 											{project.techStack.map((tech) => (
 												<span
 													key={tech}
-													className="px-3 py-1.5 text-sm rounded-lg bg-white/5 text-white/70 border border-white/10"
+													className={cn(
+														"px-3 py-1.5 text-sm rounded-lg border",
+														isGhibli
+															? "bg-slate-100 text-slate-700 border-slate-200"
+															: "bg-white/5 text-white/70 border-white/10",
+													)}
 												>
 													{tech}
 												</span>
@@ -232,20 +277,44 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 									</div>
 
 									{/* Project Info */}
-									<div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-										<h3 className="text-lg font-semibold text-white mb-4">Project Info</h3>
+									<div
+										className={cn(
+											"p-6 rounded-2xl border",
+											isGhibli ? "bg-white/60 border-slate-200/50" : "bg-white/5 border-white/10",
+										)}
+									>
+										<h3
+											className={cn(
+												"text-lg font-semibold mb-4",
+												isGhibli ? "text-slate-900" : "text-white",
+											)}
+										>
+											Project Info
+										</h3>
 										<dl className="space-y-3 text-sm">
 											<div className="flex justify-between">
-												<dt className="text-white/50">Category</dt>
-												<dd className="text-white">{categoryLabels[project.category]}</dd>
+												<dt className={isGhibli ? "text-slate-600" : "text-white/50"}>
+													Category
+												</dt>
+												<dd className={isGhibli ? "text-slate-900" : "text-white"}>
+													{categoryLabels[project.category]}
+												</dd>
 											</div>
 											<div className="flex justify-between">
-												<dt className="text-white/50">Difficulty</dt>
-												<dd className="text-white">{difficultyLabels[project.difficulty]}</dd>
+												<dt className={isGhibli ? "text-slate-600" : "text-white/50"}>
+													Difficulty
+												</dt>
+												<dd className={isGhibli ? "text-slate-900" : "text-white"}>
+													{difficultyLabels[project.difficulty]}
+												</dd>
 											</div>
 											<div className="flex justify-between">
-												<dt className="text-white/50">Created</dt>
-												<dd className="text-white">{formatDate(project.createdAt)}</dd>
+												<dt className={isGhibli ? "text-slate-600" : "text-white/50"}>
+													Created
+												</dt>
+												<dd className={isGhibli ? "text-slate-900" : "text-white"}>
+													{formatDate(project.createdAt)}
+												</dd>
 											</div>
 										</dl>
 									</div>
@@ -258,16 +327,24 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 					{safeGallery && safeGallery.length > 0 && (
 						<Section className="py-12">
 							<div className="max-w-5xl mx-auto">
-								<h3 className="text-2xl font-bold text-white mb-8">Gallery</h3>
+								<h3
+									className={cn(
+										"text-2xl font-bold mb-8",
+										isGhibli ? "text-slate-900" : "text-white",
+									)}
+								>
+									Gallery
+								</h3>
 								<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 									{safeGallery.map((image, index) => (
 										<motion.div
 											key={index}
 											initial={{ opacity: 0, scale: 0.95 }}
 											whileInView={{ opacity: 1, scale: 1 }}
-											viewport={{ once: true }}
+											viewport={{ once: true, margin: "-50px" }}
 											transition={{ delay: index * 0.1 }}
 											className="relative aspect-video rounded-xl overflow-hidden border border-white/10"
+											style={{ willChange: "transform" }}
 										>
 											<Image
 												src={image}
@@ -276,6 +353,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 												sizes="(max-width: 1024px) 100vw, 50vw"
 												unoptimized={image.startsWith("http")}
 												className="object-cover"
+												loading="lazy"
 											/>
 										</motion.div>
 									))}

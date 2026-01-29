@@ -63,8 +63,8 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 		<motion.div
 			initial={{ opacity: 0, y: 30 }}
 			whileInView={{ opacity: 1, y: 0 }}
-			viewport={{ once: true }}
-			transition={{ duration: 0.5, delay: index * 0.1 }}
+			viewport={{ once: true, margin: "-20px" }}
+			transition={{ duration: 0.4, delay: index * 0.1 }}
 			className="group relative"
 		>
 			<motion.div
@@ -81,6 +81,7 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 				role="link"
 				tabIndex={0}
 				aria-label={`View details for ${project.title}`}
+				style={{ willChange: "transform" }}
 			>
 				{/* Glow effect on hover */}
 				<div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -101,7 +102,9 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 							fill
 							sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 							unoptimized={safeThumbnail.startsWith("http")}
-							className="object-cover transition-transform duration-500 group-hover:scale-110"
+							className="object-cover transition-transform duration-500 group-hover:scale-105"
+							loading="lazy"
+							style={{ willChange: "transform" }}
 						/>
 					) : (
 						<div
