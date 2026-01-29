@@ -1,26 +1,507 @@
 @import "tailwindcss";
 
+/* ===================================
+   GHIBLI LIGHT MODE & JJK DARK MODE
+   =================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+	/* Light Mode - Ghibli Style (Primary: Red, Yellow, Blue - Rainbow) */
+	--background: #fef9f3;
+	--background-secondary: #fff8ed;
+	--foreground: #2d3436;
+	--foreground-secondary: #636e72;
+
+	/* Ghibli Rainbow Colors */
+	--primary: #e74c3c; /* Red - Ponyo red */
+	--primary-light: #ff6b6b;
+	--secondary: #f39c12; /* Yellow - Totoro umbrella */
+	--secondary-light: #f1c40f;
+	--accent: #3498db; /* Blue - Howl's sky */
+	--accent-light: #74b9ff;
+
+	/* Ghibli Soft Pastels */
+	--ghibli-pink: #fdcbcb;
+	--ghibli-peach: #ffeaa7;
+	--ghibli-sky: #a8d8ea;
+	--ghibli-grass: #b8e994;
+	--ghibli-cloud: #ffffff;
+
+	/* Gradients */
+	--gradient-primary: linear-gradient(135deg, #e74c3c 0%, #f39c12 50%, #3498db 100%);
+	--gradient-rainbow: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71, #3498db, #9b59b6);
+	--gradient-soft: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+
+	/* Glass effect */
+	--glass-bg: rgba(255, 255, 255, 0.7);
+	--glass-border: rgba(255, 255, 255, 0.5);
+
+	/* Shadows - Ghibli soft */
+	--shadow-color: rgba(231, 76, 60, 0.1);
+	--shadow-lg: 0 20px 60px rgba(231, 76, 60, 0.15), 0 10px 20px rgba(243, 156, 18, 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+.dark {
+	/* Dark Mode - Jujutsu Kaisen Theme */
+	--background: #0a0a0f;
+	--background-secondary: #12121a;
+	--foreground: #ffffff;
+	--foreground-secondary: #a0a0a0;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+	/* JJK Cursed Energy Colors */
+	--primary: #8b5cf6; /* Purple - Gojo's Infinity */
+	--primary-light: #a78bfa;
+	--secondary: #3b82f6; /* Blue - Cursed technique */
+	--secondary-light: #60a5fa;
+	--accent: #dc2626; /* Red - Blood/Sukuna */
+	--accent-light: #ef4444;
+
+	/* JJK Special Colors */
+	--jjk-purple: #7c3aed;
+	--jjk-blue: #2563eb;
+	--jjk-red: #b91c1c;
+	--jjk-black: #030305;
+	--jjk-gold: #fbbf24; /* Domain Expansion */
+
+	/* Gradients */
+	--gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #dc2626 100%);
+	--gradient-cursed: linear-gradient(135deg, #7c3aed 0%, #1e1b4b 100%);
+	--gradient-infinity: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+
+	/* Glass effect - Dark */
+	--glass-bg: rgba(10, 10, 15, 0.8);
+	--glass-border: rgba(139, 92, 246, 0.2);
+
+	/* Shadows - JJK glow */
+	--shadow-color: rgba(139, 92, 246, 0.3);
+	--shadow-lg: 0 20px 60px rgba(139, 92, 246, 0.2), 0 10px 20px rgba(59, 130, 246, 0.15);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: "Inter", sans-serif;
+	transition:
+		background-color 0.5s ease,
+		color 0.3s ease;
+}
+
+/* ===================================
+   GHIBLI ANIMATIONS (Light Mode)
+   =================================== */
+
+/* Floating clouds animation */
+@keyframes ghibli-float {
+	0%,
+	100% {
+		transform: translateY(0) translateX(0);
+	}
+	25% {
+		transform: translateY(-20px) translateX(10px);
+	}
+	50% {
+		transform: translateY(-10px) translateX(-5px);
+	}
+	75% {
+		transform: translateY(-25px) translateX(5px);
+	}
+}
+
+/* Totoro bounce */
+@keyframes ghibli-bounce {
+	0%,
+	100% {
+		transform: translateY(0) scale(1);
+	}
+	50% {
+		transform: translateY(-15px) scale(1.05);
+	}
+}
+
+/* Soot sprite wiggle */
+@keyframes ghibli-wiggle {
+	0%,
+	100% {
+		transform: rotate(-3deg);
+	}
+	50% {
+		transform: rotate(3deg);
+	}
+}
+
+/* Rainbow shimmer */
+@keyframes rainbow-shimmer {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+/* Leaf falling */
+@keyframes leaf-fall {
+	0% {
+		transform: translateY(-100vh) rotate(0deg);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(100vh) rotate(720deg);
+		opacity: 0;
+	}
+}
+
+/* ===================================
+   JJK ANIMATIONS (Dark Mode)
+   =================================== */
+
+/* Cursed energy pulse */
+@keyframes jjk-pulse {
+	0%,
+	100% {
+		box-shadow:
+			0 0 20px rgba(139, 92, 246, 0.5),
+			0 0 40px rgba(139, 92, 246, 0.3),
+			0 0 60px rgba(139, 92, 246, 0.1);
+	}
+	50% {
+		box-shadow:
+			0 0 40px rgba(139, 92, 246, 0.8),
+			0 0 80px rgba(139, 92, 246, 0.5),
+			0 0 120px rgba(139, 92, 246, 0.3);
+	}
+}
+
+/* Domain Expansion effect */
+@keyframes domain-expand {
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* Infinity rotation */
+@keyframes infinity-spin {
+	0% {
+		transform: rotate(0deg);
+		filter: hue-rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+		filter: hue-rotate(360deg);
+	}
+}
+
+/* Cursed energy flow */
+@keyframes cursed-flow {
+	0% {
+		background-position: 0% 0%;
+	}
+	50% {
+		background-position: 100% 100%;
+	}
+	100% {
+		background-position: 0% 0%;
+	}
+}
+
+/* Sukuna flicker */
+@keyframes sukuna-flicker {
+	0%,
+	100% {
+		opacity: 1;
+		filter: brightness(1);
+	}
+	50% {
+		opacity: 0.8;
+		filter: brightness(1.5);
+	}
+}
+
+/* ===================================
+   THEME-SPECIFIC UTILITY CLASSES
+   =================================== */
+
+/* Ghibli styles (light mode) */
+:root .ghibli-card {
+	background: linear-gradient(145deg, #ffffff, #fef9f3);
+	border: 2px solid var(--ghibli-peach);
+	border-radius: 24px;
+	box-shadow:
+		0 10px 40px rgba(231, 76, 60, 0.1),
+		0 4px 12px rgba(243, 156, 18, 0.08);
+}
+
+:root .ghibli-button {
+	background: var(--gradient-rainbow);
+	background-size: 200% 200%;
+	animation: rainbow-shimmer 3s ease infinite;
+	border-radius: 50px;
+	color: white;
+	font-weight: 600;
+}
+
+:root .ghibli-float {
+	animation: ghibli-float 6s ease-in-out infinite;
+}
+
+/* JJK styles (dark mode) */
+.dark .jjk-card {
+	background: linear-gradient(145deg, #12121a, #0a0a0f);
+	border: 1px solid rgba(139, 92, 246, 0.3);
+	border-radius: 16px;
+	box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+}
+
+.dark .jjk-button {
+	background: var(--gradient-infinity);
+	background-size: 200% 200%;
+	animation: cursed-flow 4s ease infinite;
+}
+
+.dark .jjk-glow {
+	animation: jjk-pulse 3s ease-in-out infinite;
+}
+
+.dark .cursed-energy {
+	background: linear-gradient(
+		135deg,
+		rgba(139, 92, 246, 0.1) 0%,
+		rgba(59, 130, 246, 0.05) 50%,
+		rgba(220, 38, 38, 0.1) 100%
+	);
+	background-size: 400% 400%;
+	animation: cursed-flow 8s ease infinite;
+}
+
+/* ===================================
+   GRADIENT TEXT
+   =================================== */
+
+.gradient-text {
+	background: var(--gradient-primary);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+:root .gradient-text {
+	background: var(--gradient-rainbow);
+	background-size: 200% 200%;
+	animation: rainbow-shimmer 4s ease infinite;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.dark .gradient-text {
+	background: var(--gradient-infinity);
+	background-size: 200% 200%;
+	animation: cursed-flow 6s ease infinite;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* ===================================
+   SCROLLBAR
+   =================================== */
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+:root ::-webkit-scrollbar-track {
+	background: var(--ghibli-peach);
+}
+
+:root ::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, var(--primary), var(--secondary));
+	border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-track {
+	background: rgba(139, 92, 246, 0.05);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, var(--primary), var(--secondary));
+	border-radius: 5px;
+}
+
+/* ===================================
+   SELECTION
+   =================================== */
+
+:root ::selection {
+	background: rgba(231, 76, 60, 0.3);
+	color: #2d3436;
+}
+
+.dark ::selection {
+	background: rgba(139, 92, 246, 0.4);
+	color: #ffffff;
+}
+
+/* Smooth scroll */
+html {
+	scroll-behavior: smooth;
+}
+
+/* ===================================
+   GLASS MORPHISM
+   =================================== */
+
+.glass {
+	background: var(--glass-bg);
+	backdrop-filter: blur(12px);
+	border: 1px solid var(--glass-border);
+}
+
+/* ===================================
+   ANIMATED GRADIENT BORDER
+   =================================== */
+
+.gradient-border {
+	position: relative;
+}
+
+.gradient-border::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	padding: 2px;
+	background: var(--gradient-primary);
+	-webkit-mask:
+		linear-gradient(#fff 0 0) content-box,
+		linear-gradient(#fff 0 0);
+	mask:
+		linear-gradient(#fff 0 0) content-box,
+		linear-gradient(#fff 0 0);
+	-webkit-mask-composite: xor;
+	mask-composite: exclude;
+}
+
+:root .gradient-border::before {
+	background: var(--gradient-rainbow);
+	background-size: 300% 300%;
+	animation: rainbow-shimmer 4s ease infinite;
+}
+
+.dark .gradient-border::before {
+	background: var(--gradient-infinity);
+	background-size: 200% 200%;
+	animation: cursed-flow 4s ease infinite;
+}
+
+/* ===================================
+   PROSE STYLES
+   =================================== */
+
+.prose-custom {
+	color: var(--foreground-secondary);
+}
+
+.prose-custom h1,
+.prose-custom h2,
+.prose-custom h3,
+.prose-custom h4 {
+	color: var(--foreground);
+	font-weight: 600;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.prose-custom p {
+	margin-bottom: 1.5rem;
+	line-height: 1.8;
+}
+
+.prose-custom a {
+	color: var(--primary);
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.prose-custom a:hover {
+	color: var(--primary-light);
+}
+
+.prose-custom code {
+	background: var(--glass-bg);
+	padding: 0.2rem 0.4rem;
+	border-radius: 0.375rem;
+	font-size: 0.875em;
+	color: var(--accent);
+}
+
+.prose-custom pre {
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
+	border-radius: 0.75rem;
+	padding: 1rem;
+	overflow-x: auto;
+	margin: 1.5rem 0;
+}
+
+.prose-custom pre code {
+	background: none;
+	padding: 0;
+	color: var(--foreground-secondary);
+}
+
+.prose-custom ul,
+.prose-custom ol {
+	margin: 1rem 0;
+	padding-left: 1.5rem;
+}
+
+.prose-custom li {
+	margin: 0.5rem 0;
+}
+
+.prose-custom blockquote {
+	border-left: 3px solid var(--primary);
+	padding-left: 1rem;
+	margin: 1.5rem 0;
+	color: var(--foreground-secondary);
+	font-style: italic;
+}
+
+.prose-custom img {
+	border-radius: 0.75rem;
+	margin: 1.5rem 0;
+}
+
+.prose-custom hr {
+	border-color: var(--glass-border);
+	margin: 2rem 0;
+}
+
+.prose-custom table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1.5rem 0;
+}
+
+.prose-custom th,
+.prose-custom td {
+	border: 1px solid var(--glass-border);
+	padding: 0.75rem;
+	text-align: left;
+}
+
+.prose-custom th {
+	background: var(--glass-bg);
+	color: var(--foreground);
 }
