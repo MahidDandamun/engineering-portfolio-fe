@@ -17,6 +17,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 	const [theme, setTheme] = useState<Theme>("dark");
 
 	useEffect(() => {
+		if (typeof window === "undefined") return;
+
 		const savedTheme = localStorage.getItem("theme") as Theme | null;
 		if (savedTheme) {
 			setTheme(savedTheme);
@@ -26,6 +28,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	useEffect(() => {
+		if (typeof window === "undefined") return;
+
 		localStorage.setItem("theme", theme);
 		document.documentElement.classList.remove("light", "dark");
 		document.documentElement.classList.add(theme);

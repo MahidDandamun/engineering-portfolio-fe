@@ -22,16 +22,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const pathname = usePathname();
 
 	useEffect(() => {
+		let isMounted = true;
+
 		if (!pathname?.startsWith("/admin")) {
-			setIsLoading(false);
-			return;
+			if (isMounted) {
+				setIsLoading(false);
+			}
+			return () => {
+				isMounted = false;
+			};
 		}
 
 		authApi
 			.getMe()
-			.then((res) => setUser(res.data?.user || null))
-			.catch(() => setUser(null))
-			.finally(() => setIsLoading(false));
+			.then((res) => {
+				if (isMounted) {
+					setUser(res.data?.user || null);
+				}
+			})
+			.catch(() => {
+				if (isMounted) {
+					setUser(null);
+				}
+			})
+			.finally(() => {
+				if (isMounted) {
+					setIsLoading(false);
+				}
+			});
+
+		return () => {
+			isMounted = false;
+		};
 	}, [pathname]);
 
 	const login = useCallback(async (username: string, password: string) => {

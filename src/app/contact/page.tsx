@@ -69,7 +69,7 @@ export default function ContactPage() {
 
 			setSubmitStatus("success");
 			reset();
-		} catch (error) {
+		} catch {
 			setSubmitStatus("error");
 		} finally {
 			setIsSubmitting(false);
@@ -213,7 +213,7 @@ export default function ContactPage() {
 									className="flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400"
 								>
 									<CheckCircle className="w-5 h-5 shrink-0" />
-									<p>Thank you! Your message has been sent. I'll get back to you soon.</p>
+									<p>Thank you! Your message has been sent. I&apos;ll get back to you soon.</p>
 								</motion.div>
 							)}
 

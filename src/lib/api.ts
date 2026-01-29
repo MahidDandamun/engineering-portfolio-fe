@@ -12,22 +12,34 @@ export class ApiError extends Error {
 }
 
 export async function api<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-	const res = await fetch(`${API_BASE}${endpoint}`, {
-		...options,
-		credentials: "include", // Required for cookie auth
-		headers: {
-			"Content-Type": "application/json",
-			...options.headers,
-		},
-	});
+	try {
+		const isAbsoluteUrl = /^https?:\/\//i.test(endpoint);
+		const url = isAbsoluteUrl ? endpoint : `${API_BASE}${endpoint}`;
+		const res = await fetch(url, {
+			...options,
+			credentials: "include", // Required for cookie auth
+			headers: {
+				"Content-Type": "application/json",
+				...options.headers,
+			},
+		});
 
-	const data = await res.json();
+		const data = await res.json();
 
-	if (!res.ok) {
-		throw new ApiError(data.message || "Request failed", res.status, data);
+		if (!res.ok) {
+			throw new ApiError(data.message || "Request failed", res.status, data);
+		}
+
+		return data;
+	} catch (error) {
+		if (error instanceof ApiError) {
+			throw error;
+		}
+
+		throw new ApiError("Network error", 0, {
+			message: error instanceof Error ? error.message : "Unknown error",
+		});
 	}
-
-	return data;
 }
 
 // Type-safe API utilities

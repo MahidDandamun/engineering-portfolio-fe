@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "@/context";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Project } from "@/types";
 
@@ -29,7 +30,11 @@ const queryClient = new QueryClient({
 });
 
 const renderWithProviders = (ui: React.ReactElement) => {
-	return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
+	return render(
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider>{ui}</ThemeProvider>
+		</QueryClientProvider>,
+	);
 };
 
 describe("ProjectCard", () => {
