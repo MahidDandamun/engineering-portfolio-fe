@@ -67,7 +67,7 @@ export function Navbar() {
 						: "bg-transparent",
 				)}
 			>
-				<nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<nav className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
 					<div className="flex items-center justify-between h-16 lg:h-20">
 						{/* Logo */}
 						<Link href="/" className="relative z-10">
@@ -80,7 +80,7 @@ export function Navbar() {
 									className={cn(
 										"w-10 h-10 rounded-xl flex items-center justify-center",
 										isGhibli
-											? "bg-linear-to-br from-[#e74c3c] via-[#f39c12] to-[#3498db]"
+											? "bg-linear-to-br from-[var(--ghibli-pink)] via-[var(--ghibli-terracotta)] to-[var(--ghibli-sage)]"
 											: "bg-linear-to-br from-[#8b5cf6] via-[#3b82f6] to-[#dc2626] jjk-glow",
 									)}
 								>
@@ -89,10 +89,13 @@ export function Navbar() {
 								<span
 									className={cn(
 										"hidden sm:block font-semibold text-lg",
-										isGhibli ? "text-[#2d3436]" : "text-white",
+										isGhibli ? "text-[var(--foreground)]" : "text-white",
 									)}
 								>
-									MHD<span className={isGhibli ? "text-[#e74c3c]" : "text-[#8b5cf6]"}>.dev</span>
+									MHD
+									<span className={isGhibli ? "text-[var(--ghibli-terracotta)]" : "text-[#8b5cf6]"}>
+										.dev
+									</span>
 								</span>
 							</motion.div>
 						</Link>
@@ -110,10 +113,10 @@ export function Navbar() {
 												"relative px-4 py-2 rounded-xl text-sm font-medium transition-colors",
 												isActive
 													? isGhibli
-														? "text-[#2d3436]"
+														? "text-[var(--foreground)]"
 														: "text-white"
 													: isGhibli
-														? "text-[#636e72] hover:text-[#2d3436]"
+														? "text-[var(--foreground-secondary)] hover:text-[var(--foreground)]"
 														: "text-white/60 hover:text-white",
 											)}
 										>
@@ -123,7 +126,7 @@ export function Navbar() {
 													className={cn(
 														"absolute inset-0 rounded-xl border",
 														isGhibli
-															? "bg-[#ffeaa7]/50 border-[#f39c12]/30"
+															? "bg-[var(--ghibli-cream)]/50 border-[var(--ghibli-pink)]/30"
 															: "bg-white/10 border-purple-500/20",
 													)}
 													transition={{

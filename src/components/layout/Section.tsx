@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/context";
 
 interface SectionProps {
 	children: React.ReactNode;
@@ -25,6 +26,8 @@ interface SectionHeaderProps {
 }
 
 export function SectionHeader({ title, subtitle, className, align = "center" }: SectionHeaderProps) {
+	const { isGhibli } = useTheme();
+
 	return (
 		<motion.div
 			initial={{ opacity: 0, y: 20 }}
@@ -33,11 +36,23 @@ export function SectionHeader({ title, subtitle, className, align = "center" }: 
 			transition={{ duration: 0.5 }}
 			className={cn("mb-12 lg:mb-16", align === "center" && "text-center", className)}
 		>
-			<h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+			<h2
+				className={cn(
+					"text-3xl sm:text-4xl lg:text-5xl font-bold mb-4",
+					isGhibli ? "text-[var(--foreground)]" : "text-white",
+				)}
+			>
 				{title.split(" ").map((word, index) => (
 					<span key={index}>
 						{index === title.split(" ").length - 1 ? (
-							<span className="bg-linear-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+							<span
+								className={cn(
+									"bg-clip-text text-transparent bg-linear-to-r",
+									isGhibli
+										? "from-[var(--ghibli-pink)] to-[var(--ghibli-terracotta)]"
+										: "from-violet-400 to-cyan-400",
+								)}
+							>
 								{word}
 							</span>
 						) : (
@@ -46,7 +61,16 @@ export function SectionHeader({ title, subtitle, className, align = "center" }: 
 					</span>
 				))}
 			</h2>
-			{subtitle && <p className="text-lg text-white/60 max-w-2xl mx-auto">{subtitle}</p>}
+			{subtitle && (
+				<p
+					className={cn(
+						"text-lg max-w-2xl mx-auto",
+						isGhibli ? "text-[var(--foreground-secondary)]" : "text-white/60",
+					)}
+				>
+					{subtitle}
+				</p>
+			)}
 		</motion.div>
 	);
 }
