@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { projectsApi, GetProjectsParams } from "@/lib/projects";
 import { CreateProjectDTO, UpdateProjectDTO } from "@/types";
 import { dummyProjects } from "@/lib/dummyData";
@@ -72,6 +73,10 @@ export function useCreateProject() {
 		mutationFn: (data: CreateProjectDTO) => projectsApi.create(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: projectKeys.all });
+			toast.success("Project created successfully!");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to create project");
 		},
 	});
 }
@@ -83,6 +88,10 @@ export function useUpdateProject() {
 		mutationFn: ({ id, data }: { id: string; data: UpdateProjectDTO }) => projectsApi.update(id, data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: projectKeys.all });
+			toast.success("Project updated successfully!");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to update project");
 		},
 	});
 }
@@ -94,6 +103,10 @@ export function useDeleteProject() {
 		mutationFn: (id: string) => projectsApi.delete(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: projectKeys.all });
+			toast.success("Project deleted successfully!");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to delete project");
 		},
 	});
 }

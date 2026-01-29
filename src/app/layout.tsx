@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryProvider, AuthProvider, ThemeProvider } from "@/context";
 import { Navbar, Footer } from "@/components/layout";
-import { ThemeBackground } from "@/components/ui";
+import { ThemeBackground, Toaster } from "@/components/ui";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,6 +50,9 @@ export default function RootLayout({
 						<AuthProvider>
 							{/* Animated Background */}
 							<ThemeBackground />
+
+							{/* Toast Notifications */}
+							<Toaster />
 
 							{/* Content */}
 							<div className="relative z-10 flex flex-col min-h-screen">

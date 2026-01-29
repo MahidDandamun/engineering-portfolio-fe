@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { certificatesApi } from "@/lib/certificates";
 import { CreateCertificateDTO, UpdateCertificateDTO } from "@/types";
 import { dummyCertificates } from "@/lib/dummyData";
@@ -51,6 +52,10 @@ export function useCreateCertificate() {
 		mutationFn: (data: CreateCertificateDTO) => certificatesApi.create(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: certificateKeys.all });
+			toast.success("Certificate created successfully!");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to create certificate");
 		},
 	});
 }
@@ -62,6 +67,10 @@ export function useUpdateCertificate() {
 		mutationFn: ({ id, data }: { id: string; data: UpdateCertificateDTO }) => certificatesApi.update(id, data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: certificateKeys.all });
+			toast.success("Certificate updated successfully!");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to update certificate");
 		},
 	});
 }
@@ -73,6 +82,10 @@ export function useDeleteCertificate() {
 		mutationFn: (id: string) => certificatesApi.delete(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: certificateKeys.all });
+			toast.success("Certificate deleted successfully!");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to delete certificate");
 		},
 	});
 }

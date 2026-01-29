@@ -7,7 +7,7 @@ import { PageWrapper, Section, SectionHeader } from "@/components/layout";
 import { ProjectGrid, ProjectFilter } from "@/components/projects";
 import { useProjects } from "@/hooks";
 import { ProjectCategory } from "@/types";
-import { Button, Skeleton } from "@/components/ui";
+import { Button, Skeleton, ErrorBoundary } from "@/components/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 function ProjectsContent() {
@@ -111,16 +111,18 @@ function ProjectsLoading() {
 
 export default function ProjectsPage() {
 	return (
-		<PageWrapper>
-			<Section className="pt-32">
-				<SectionHeader
-					title="All Projects"
-					subtitle="Explore my work across different domains and technologies"
-				/>
-				<Suspense fallback={<ProjectsLoading />}>
-					<ProjectsContent />
-				</Suspense>
-			</Section>
-		</PageWrapper>
+		<ErrorBoundary>
+			<PageWrapper>
+				<Section className="pt-32">
+					<SectionHeader
+						title="All Projects"
+						subtitle="Explore my work across different domains and technologies"
+					/>
+					<Suspense fallback={<ProjectsLoading />}>
+						<ProjectsContent />
+					</Suspense>
+				</Section>
+			</PageWrapper>
+		</ErrorBoundary>
 	);
 }
