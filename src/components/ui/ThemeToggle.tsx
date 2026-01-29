@@ -8,15 +8,15 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ className = "" }: ThemeToggleProps) {
-	const { theme, toggleTheme, isGhibli, isJJK } = useTheme();
+	const { toggleTheme, isGhibli } = useTheme();
 
 	return (
 		<motion.button
 			onClick={toggleTheme}
 			className={`relative w-16 h-8 rounded-full p-1 transition-colors duration-500 ${
 				isGhibli
-					? "bg-linear-to-r from-[#ffeaa7] via-[#fdcbcb] to-[#a8d8ea]"
-					: "bg-linear-to-r from-[#7c3aed] via-[#3b82f6] to-[#dc2626]"
+					? "bg-linear-to-r from-[#d64550] via-[#a62c2c] to-[#0e3b6c]"
+					: "bg-linear-to-r from-[#8b5cf6] via-[#3b82f6] to-[#dc2626]"
 			} ${className}`}
 			whileHover={{ scale: 1.05 }}
 			whileTap={{ scale: 0.95 }}
@@ -27,7 +27,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
 				className="absolute inset-0 rounded-full blur-md opacity-50"
 				style={{
 					background: isGhibli
-						? "linear-gradient(90deg, #f39c12, #e74c3c, #3498db)"
+						? "linear-gradient(90deg, #d64550, #a62c2c, #0e3b6c)"
 						: "linear-gradient(90deg, #8b5cf6, #3b82f6, #dc2626)",
 				}}
 				animate={{
@@ -58,7 +58,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
 						>
 							{/* Sun icon - Ghibli style */}
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-								<circle cx="12" cy="12" r="5" fill="#f39c12" />
+								<circle cx="12" cy="12" r="5" fill="#d64550" />
 								{[...Array(8)].map((_, i) => (
 									<motion.line
 										key={i}
@@ -66,7 +66,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
 										y1="2"
 										x2="12"
 										y2="5"
-										stroke="#f39c12"
+										stroke="#d64550"
 										strokeWidth="2"
 										strokeLinecap="round"
 										transform={`rotate(${i * 45} 12 12)`}
@@ -91,7 +91,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
 								<motion.g
 									animate={{ scale: [1, 1.5, 1] }}
 									transition={{ duration: 1, repeat: Infinity }}
-									transformOrigin="12px 12px"
+									style={{ transformOrigin: "12px 12px" }}
 								>
 									<circle cx={12} cy={12} r={1} fill="#dc2626" />
 								</motion.g>

@@ -17,20 +17,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const router = useRouter();
 	const pathname = usePathname();
+	const [isLoading, setIsLoading] = useState(() => pathname?.startsWith("/admin") ?? false);
+	const router = useRouter();
 
 	useEffect(() => {
 		let isMounted = true;
 
 		if (!pathname?.startsWith("/admin")) {
-			if (isMounted) {
-				setIsLoading(false);
-			}
-			return () => {
-				isMounted = false;
-			};
+			return;
 		}
 
 		authApi

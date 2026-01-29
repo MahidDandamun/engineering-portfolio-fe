@@ -42,9 +42,11 @@ const createWrapper = () => {
 			queries: { retry: false },
 		},
 	});
-	return ({ children }: { children: React.ReactNode }) => (
+	const Wrapper = ({ children }: { children: React.ReactNode }) => (
 		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 	);
+	Wrapper.displayName = "TestWrapper";
+	return Wrapper;
 };
 
 describe("useCertificates", () => {
@@ -53,7 +55,7 @@ describe("useCertificates", () => {
 	});
 
 	it("fetches certificates successfully", async () => {
-		(certificatesApi.getAll as any).mockResolvedValue({
+		vi.mocked(certificatesApi.getAll).mockResolvedValue({
 			success: true,
 			data: mockCertificates,
 		});
@@ -69,7 +71,7 @@ describe("useCertificates", () => {
 	});
 
 	it("handles loading state", () => {
-		(certificatesApi.getAll as any).mockImplementation(
+		vi.mocked(certificatesApi.getAll).mockImplementation(
 			() => new Promise(() => {}), // Never resolves
 		);
 
@@ -87,7 +89,7 @@ describe("useCertificate", () => {
 	});
 
 	it("fetches single certificate by id", async () => {
-		(certificatesApi.getById as any).mockResolvedValue({
+		vi.mocked(certificatesApi.getById).mockResolvedValue({
 			success: true,
 			data: mockCertificates[0],
 		});

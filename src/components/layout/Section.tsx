@@ -13,7 +13,7 @@ interface SectionProps {
 export function Section({ children, className, id }: SectionProps) {
 	return (
 		<section id={id} className={cn("py-16 lg:py-24", className)}>
-			<div className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">{children}</div>
+			<div className="max-w-7xl 2xl:max-w-400 mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">{children}</div>
 		</section>
 	);
 }
@@ -39,7 +39,7 @@ export function SectionHeader({ title, subtitle, className, align = "center" }: 
 			<h2
 				className={cn(
 					"text-3xl sm:text-4xl lg:text-5xl font-bold mb-4",
-					isGhibli ? "text-[var(--foreground)]" : "text-white",
+					isGhibli ? "text-(--foreground)" : "text-white",
 				)}
 			>
 				{title.split(" ").map((word, index) => (
@@ -49,7 +49,7 @@ export function SectionHeader({ title, subtitle, className, align = "center" }: 
 								className={cn(
 									"bg-clip-text text-transparent bg-linear-to-r",
 									isGhibli
-										? "from-[var(--ghibli-pink)] to-[var(--ghibli-terracotta)]"
+										? "from-(--ghibli-pink) to-(--ghibli-terracotta)"
 										: "from-violet-400 to-cyan-400",
 								)}
 							>
@@ -65,7 +65,7 @@ export function SectionHeader({ title, subtitle, className, align = "center" }: 
 				<p
 					className={cn(
 						"text-lg max-w-2xl mx-auto",
-						isGhibli ? "text-[var(--foreground-secondary)]" : "text-white/60",
+						isGhibli ? "text-(--foreground-secondary)" : "text-white/60",
 					)}
 				>
 					{subtitle}

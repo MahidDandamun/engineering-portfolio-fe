@@ -86,8 +86,8 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
 				},
 			});
 			router.push("/admin/projects");
-		} catch (error) {
-			console.error("Failed to update project:", error);
+		} catch {
+			// Error is handled by the mutation's onError callback
 		}
 	};
 

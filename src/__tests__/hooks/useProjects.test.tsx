@@ -53,9 +53,11 @@ const createWrapper = () => {
 			queries: { retry: false },
 		},
 	});
-	return ({ children }: { children: React.ReactNode }) => (
+	const Wrapper = ({ children }: { children: React.ReactNode }) => (
 		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 	);
+	Wrapper.displayName = "TestWrapper";
+	return Wrapper;
 };
 
 describe("useProjects", () => {
@@ -64,7 +66,7 @@ describe("useProjects", () => {
 	});
 
 	it("fetches projects successfully", async () => {
-		(projectsApi.getAll as any).mockResolvedValue({
+		vi.mocked(projectsApi.getAll).mockResolvedValue({
 			success: true,
 			data: mockProjects,
 			pagination: { page: 1, limit: 10, total: 2, pages: 1 },
@@ -81,7 +83,7 @@ describe("useProjects", () => {
 	});
 
 	it("passes filters to API", async () => {
-		(projectsApi.getAll as any).mockResolvedValue({
+		vi.mocked(projectsApi.getAll).mockResolvedValue({
 			success: true,
 			data: [mockProjects[0]],
 			pagination: { page: 1, limit: 10, total: 1, pages: 1 },
@@ -102,7 +104,7 @@ describe("useFeaturedProjects", () => {
 
 	it("fetches featured projects", async () => {
 		const featuredProjects = mockProjects.filter((p) => p.featured);
-		(projectsApi.getFeatured as any).mockResolvedValue({
+		vi.mocked(projectsApi.getFeatured).mockResolvedValue({
 			success: true,
 			data: featuredProjects,
 		});
@@ -124,7 +126,7 @@ describe("useProject", () => {
 	});
 
 	it("fetches single project by slug", async () => {
-		(projectsApi.getBySlug as any).mockResolvedValue({
+		vi.mocked(projectsApi.getBySlug).mockResolvedValue({
 			success: true,
 			data: mockProjects[0],
 		});

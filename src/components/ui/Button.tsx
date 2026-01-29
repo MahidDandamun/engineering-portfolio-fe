@@ -26,17 +26,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 		const getVariantClasses = () => {
 			const variants = {
 				primary: isGhibli
-					? "bg-gradient-to-r from-[#e74c3c] via-[#f39c12] to-[#3498db] text-white hover:opacity-90 shadow-lg shadow-[#e74c3c]/25 ghibli-button"
-					: "bg-gradient-to-r from-[#8b5cf6] to-[#3b82f6] text-white hover:from-[#7c3aed] hover:to-[#2563eb] shadow-lg shadow-purple-500/25",
+					? "bg-linear-to-r from-[#a62c2c] via-[#d64550] to-[#0e3b6c] text-white hover:shadow-xl hover:shadow-[#d64550]/30 shadow-lg shadow-[#d64550]/20"
+					: "bg-linear-to-r from-[#8b5cf6] to-[#3b82f6] text-white hover:from-[#7c3aed] hover:to-[#2563eb] shadow-lg shadow-purple-500/25",
 				secondary: isGhibli
-					? "bg-white/80 text-[#2d3436] hover:bg-white border border-[#ffeaa7] backdrop-blur-sm"
+					? "bg-white/90 text-[#6e3f28] hover:bg-white border-2 border-[#6cb65f]/40 backdrop-blur-sm hover:border-[#6cb65f]"
 					: "bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm",
 				ghost: isGhibli
-					? "text-[#636e72] hover:text-[#2d3436] hover:bg-[#ffeaa7]/50"
+					? "text-[#6e3f28] hover:text-[#a62c2c] hover:bg-[#6cb65f]/20"
 					: "text-white/70 hover:text-white hover:bg-white/10",
-				danger: "bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 shadow-lg shadow-red-500/25",
+				danger: "bg-linear-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 shadow-lg shadow-red-500/25",
 				outline: isGhibli
-					? "border-2 border-[#e74c3c] text-[#e74c3c] hover:bg-[#e74c3c]/10"
+					? "border-2 border-[#0e3b6c] text-[#0e3b6c] hover:bg-[#0e3b6c]/10 hover:border-[#d64550] hover:text-[#d64550]"
 					: "border-2 border-[#8b5cf6] text-[#8b5cf6] hover:bg-[#8b5cf6]/10",
 			};
 			return variants[variant];
@@ -49,9 +49,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 				whileTap={{ scale: 0.98 }}
 				disabled={disabled || isLoading}
 				className={cn(
-					"relative inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200",
+					"relative inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 cursor-pointer",
 					isGhibli
-						? "focus:outline-none focus:ring-2 focus:ring-[#e74c3c] focus:ring-offset-2 focus:ring-offset-[#fef9f3]"
+						? "focus:outline-none focus:ring-2 focus:ring-[#d64550] focus:ring-offset-2 focus:ring-offset-[#f7f0e3]"
 						: "focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] focus:ring-offset-2 focus:ring-offset-[#0a0a0f]",
 					"disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none",
 					getVariantClasses(),

@@ -17,22 +17,32 @@ vi.mock("next/navigation", () => ({
 
 // Mock next/image
 vi.mock("next/image", () => ({
-	default: (props: any) => {
+	default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
 		// eslint-disable-next-line @next/next/no-img-element
-		return <img {...props} />;
+		return <img {...props} alt={props.alt || ""} />;
 	},
 }));
 
 // Mock framer-motion
 vi.mock("framer-motion", () => ({
 	motion: {
-		div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-		button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-		span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
-		a: ({ children, ...props }: any) => <a {...props}>{children}</a>,
-		tr: ({ children, ...props }: any) => <tr {...props}>{children}</tr>,
+		div: ({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) => (
+			<div {...props}>{children}</div>
+		),
+		button: ({ children, ...props }: React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>>) => (
+			<button {...props}>{children}</button>
+		),
+		span: ({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLSpanElement>>) => (
+			<span {...props}>{children}</span>
+		),
+		a: ({ children, ...props }: React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>) => (
+			<a {...props}>{children}</a>
+		),
+		tr: ({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLTableRowElement>>) => (
+			<tr {...props}>{children}</tr>
+		),
 	},
-	AnimatePresence: ({ children }: any) => <>{children}</>,
+	AnimatePresence: ({ children }: React.PropsWithChildren) => <>{children}</>,
 	useMotionValue: () => ({ set: vi.fn() }),
 	useTransform: () => 0,
 	useSpring: () => 0,

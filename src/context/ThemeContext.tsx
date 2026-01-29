@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 type Theme = "light" | "dark";
+type ThemeAlias = "ghibli" | "jjk";
 
 interface ThemeContextType {
 	theme: Theme;
@@ -11,21 +12,34 @@ interface ThemeContextType {
 	isJJK: boolean;
 }
 
+interface ThemeProviderProps {
+	children: ReactNode;
+	defaultTheme?: Theme | ThemeAlias;
+}
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-	const [theme, setTheme] = useState<Theme>("dark");
+// Convert theme alias to actual theme
+const resolveTheme = (theme: Theme | ThemeAlias): Theme => {
+	if (theme === "ghibli") return "light";
+	if (theme === "jjk") return "dark";
+	return theme;
+};
 
-	useEffect(() => {
-		if (typeof window === "undefined") return;
+export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
+	const [theme, setTheme] = useState<Theme>(() => {
+		if (defaultTheme) return resolveTheme(defaultTheme);
+		if (typeof window === "undefined") return "dark";
 
 		const savedTheme = localStorage.getItem("theme") as Theme | null;
-		if (savedTheme) {
-			setTheme(savedTheme);
-		} else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-			setTheme("light");
+		if (savedTheme) return savedTheme;
+
+		if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+			return "light";
 		}
-	}, []);
+
+		return "dark";
+	});
 
 	useEffect(() => {
 		if (typeof window === "undefined") return;

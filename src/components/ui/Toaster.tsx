@@ -37,20 +37,20 @@ export function Toaster() {
 							: "bg-gray-800 border-white/20 hover:bg-gray-700",
 					success:
 						theme === "light"
-							? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200"
-							: "bg-gradient-to-r from-green-900/20 to-emerald-900/20 border-green-500/30",
+							? "bg-linear-to-r from-green-50 to-emerald-50 border-green-200"
+							: "bg-linear-to-r from-green-900/20 to-emerald-900/20 border-green-500/30",
 					error:
 						theme === "light"
-							? "bg-gradient-to-r from-red-50 to-rose-50 border-red-200"
-							: "bg-gradient-to-r from-red-900/20 to-rose-900/20 border-red-500/30",
+							? "bg-linear-to-r from-red-50 to-rose-50 border-red-200"
+							: "bg-linear-to-r from-red-900/20 to-rose-900/20 border-red-500/30",
 					warning:
 						theme === "light"
-							? "bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200"
-							: "bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border-yellow-500/30",
+							? "bg-linear-to-r from-yellow-50 to-orange-50 border-yellow-200"
+							: "bg-linear-to-r from-yellow-900/20 to-orange-900/20 border-yellow-500/30",
 					info:
 						theme === "light"
-							? "bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200"
-							: "bg-gradient-to-r from-blue-900/20 to-cyan-900/20 border-blue-500/30",
+							? "bg-linear-to-r from-blue-50 to-cyan-50 border-blue-200"
+							: "bg-linear-to-r from-blue-900/20 to-cyan-900/20 border-blue-500/30",
 				},
 			}}
 		/>

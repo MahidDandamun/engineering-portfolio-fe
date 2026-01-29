@@ -22,11 +22,11 @@ export function Card({ children, className, hover = true, glow = false }: CardPr
 			whileHover={hover ? { y: -5, scale: 1.02 } : undefined}
 			transition={{ duration: 0.3 }}
 			className={cn(
-				"relative rounded-2xl border backdrop-blur-sm overflow-hidden transition-colors duration-500",
+				"relative rounded-2xl border backdrop-blur-sm overflow-hidden transition-colors duration-500 cursor-pointer",
 				isGhibli
-					? "border-[#ffeaa7]/50 bg-white/70 shadow-lg shadow-[#e74c3c]/5"
+					? "border-[#6cb65f]/30 bg-white/90 shadow-lg shadow-[#6e3f28]/5 hover:shadow-xl hover:shadow-[#6e3f28]/10"
 					: "border-white/10 bg-white/5",
-				glow && (isGhibli ? "shadow-xl shadow-[#f39c12]/20" : "shadow-xl shadow-[#8b5cf6]/10"),
+				glow && (isGhibli ? "shadow-xl shadow-[#d64550]/20" : "shadow-xl shadow-[#8b5cf6]/10"),
 				isGhibli ? "ghibli-card" : "jjk-card",
 				className,
 			)}

@@ -95,8 +95,8 @@ export default function AdminCertificatesPage() {
 				await createCertificate.mutateAsync(payload);
 			}
 			closeModal();
-		} catch (error) {
-			console.error("Failed to save certificate:", error);
+		} catch {
+			// Error is handled by the mutation's onError callback
 		}
 	};
 
@@ -106,8 +106,8 @@ export default function AdminCertificatesPage() {
 		try {
 			await deleteCertificate.mutateAsync(deleteModal._id);
 			setDeleteModal(null);
-		} catch (error) {
-			console.error("Failed to delete certificate:", error);
+		} catch {
+			// Error is handled by the mutation's onError callback
 		}
 	};
 

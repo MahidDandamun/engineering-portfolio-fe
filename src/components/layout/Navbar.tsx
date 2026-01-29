@@ -62,12 +62,12 @@ export function Navbar() {
 					"fixed top-0 left-0 right-0 z-50 transition-all duration-500",
 					scrolled
 						? isGhibli
-							? "bg-white/80 backdrop-blur-xl border-b border-[#ffeaa7]/50 shadow-lg"
+							? "bg-[#f7f0e3]/95 backdrop-blur-xl border-b border-[#6cb65f]/30 shadow-lg shadow-[#6e3f28]/5"
 							: "bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-purple-500/20 shadow-lg shadow-purple-500/5"
 						: "bg-transparent",
 				)}
 			>
-				<nav className="max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+				<nav className="max-w-7xl 2xl:max-w-400 mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
 					<div className="flex items-center justify-between h-16 lg:h-20">
 						{/* Logo */}
 						<Link href="/" className="relative z-10">
@@ -80,7 +80,7 @@ export function Navbar() {
 									className={cn(
 										"w-10 h-10 rounded-xl flex items-center justify-center",
 										isGhibli
-											? "bg-linear-to-br from-[var(--ghibli-pink)] via-[var(--ghibli-terracotta)] to-[var(--ghibli-sage)]"
+											? "bg-linear-to-br from-[#d64550] via-[#a62c2c] to-[#0e3b6c]"
 											: "bg-linear-to-br from-[#8b5cf6] via-[#3b82f6] to-[#dc2626] jjk-glow",
 									)}
 								>
@@ -89,11 +89,11 @@ export function Navbar() {
 								<span
 									className={cn(
 										"hidden sm:block font-semibold text-lg",
-										isGhibli ? "text-[var(--foreground)]" : "text-white",
+										isGhibli ? "text-(--foreground)" : "text-white",
 									)}
 								>
 									MHD
-									<span className={isGhibli ? "text-[var(--ghibli-terracotta)]" : "text-[#8b5cf6]"}>
+									<span className={isGhibli ? "text-(--ghibli-terracotta)" : "text-[#8b5cf6]"}>
 										.dev
 									</span>
 								</span>
@@ -113,10 +113,10 @@ export function Navbar() {
 												"relative px-4 py-2 rounded-xl text-sm font-medium transition-colors",
 												isActive
 													? isGhibli
-														? "text-[var(--foreground)]"
+														? "text-(--foreground)"
 														: "text-white"
 													: isGhibli
-														? "text-[var(--foreground-secondary)] hover:text-[var(--foreground)]"
+														? "text-(--foreground-secondary) hover:text-(--foreground)"
 														: "text-white/60 hover:text-white",
 											)}
 										>
@@ -126,7 +126,7 @@ export function Navbar() {
 													className={cn(
 														"absolute inset-0 rounded-xl border",
 														isGhibli
-															? "bg-[var(--ghibli-cream)]/50 border-[var(--ghibli-pink)]/30"
+															? "bg-(--ghibli-cream)/50 border-(--ghibli-pink)/30"
 															: "bg-white/10 border-purple-500/20",
 													)}
 													transition={{
@@ -150,24 +150,26 @@ export function Navbar() {
 
 							{/* Social Links */}
 							<div className="flex items-center gap-2">
-								{socialLinks.map((link) => (
-									<motion.a
-										key={link.label}
-										href={link.href}
-										target="_blank"
-										rel="noopener noreferrer"
-										whileHover={{ scale: 1.1, y: -2 }}
-										whileTap={{ scale: 0.95 }}
-										className={cn(
-											"p-2 rounded-lg transition-colors",
-											isGhibli
-												? "text-[#636e72] hover:text-[#e74c3c] hover:bg-[#ffeaa7]/50"
-												: "text-white/60 hover:text-white hover:bg-white/10",
-										)}
-									>
-										<link.icon className="w-5 h-5" />
-									</motion.a>
-								))}
+								{socialLinks.map((link) => {
+									return (
+										<motion.a
+											key={link.label}
+											href={link.href}
+											target="_blank"
+											rel="noopener noreferrer"
+											whileHover={{ scale: 1.1, y: -2 }}
+											whileTap={{ scale: 0.95 }}
+											className={cn(
+												"p-2 rounded-lg transition-colors cursor-pointer",
+												isGhibli
+													? "text-[#6e3f28] hover:text-[#d64550] hover:bg-[#6cb65f]/20"
+													: "text-white/60 hover:text-white hover:bg-white/10",
+											)}
+										>
+											<link.icon className="w-5 h-5" />
+										</motion.a>
+									);
+								})}
 							</div>
 
 							{/* Resume Button */}
@@ -177,10 +179,10 @@ export function Navbar() {
 								whileHover={{ scale: 1.05 }}
 								whileTap={{ scale: 0.95 }}
 								className={cn(
-									"flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium shadow-lg",
+									"flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-semibold shadow-lg cursor-pointer",
 									isGhibli
-										? "bg-linear-to-r from-[#e74c3c] to-[#f39c12] shadow-[#e74c3c]/25"
-										: "bg-linear-to-r from-[#8b5cf6] to-[#3b82f6] shadow-purple-500/25",
+										? "bg-linear-to-r from-[#d64550] via-[#a62c2c] to-[#0e3b6c] shadow-[#d64550]/25 hover:shadow-xl hover:shadow-[#d64550]/40"
+										: "bg-linear-to-r from-[#8b5cf6] via-[#3b82f6] to-[#dc2626] shadow-[#8b5cf6]/25 hover:shadow-xl hover:shadow-[#8b5cf6]/40",
 								)}
 							>
 								<Download className="w-4 h-4" />
@@ -193,9 +195,9 @@ export function Navbar() {
 							whileTap={{ scale: 0.95 }}
 							onClick={() => setIsOpen(!isOpen)}
 							className={cn(
-								"lg:hidden relative z-10 p-2 rounded-lg transition-colors",
+								"lg:hidden relative z-10 p-2 rounded-lg transition-colors cursor-pointer",
 								isGhibli
-									? "text-[#636e72] hover:text-[#2d3436] hover:bg-[#ffeaa7]/50"
+									? "text-[#6e3f28] hover:text-[#0e3b6c] hover:bg-[#6cb65f]/20"
 									: "text-white/80 hover:text-white hover:bg-white/10",
 							)}
 						>
@@ -234,7 +236,9 @@ export function Navbar() {
 							transition={{ type: "spring", damping: 30, stiffness: 300 }}
 							className={cn(
 								"absolute right-0 top-0 bottom-0 w-full max-w-sm backdrop-blur-xl border-l",
-								isGhibli ? "bg-white/95 border-[#ffeaa7]/50" : "bg-[#0a0a0f]/95 border-purple-500/20",
+								isGhibli
+									? "bg-[#f7f0e3]/98 border-[#6cb65f]/30"
+									: "bg-[#0a0a0f]/95 border-purple-500/20",
 							)}
 						>
 							<div className="flex flex-col h-full pt-20 pb-6 px-6">
@@ -257,13 +261,13 @@ export function Navbar() {
 												<Link
 													href={link.href}
 													className={cn(
-														"flex items-center gap-4 px-4 py-3 rounded-xl transition-colors",
+														"flex items-center gap-4 px-4 py-3 rounded-xl transition-colors cursor-pointer",
 														isActive
 															? isGhibli
-																? "bg-[#ffeaa7]/50 text-[#2d3436]"
+																? "bg-[#6cb65f]/20 text-[#0e3b6c] border-l-4 border-[#0e3b6c]"
 																: "bg-white/10 text-white"
 															: isGhibli
-																? "text-[#636e72] hover:text-[#2d3436] hover:bg-[#ffeaa7]/30"
+																? "text-[#6e3f28] hover:text-[#0e3b6c] hover:bg-[#6cb65f]/10"
 																: "text-white/60 hover:text-white hover:bg-white/5",
 													)}
 												>

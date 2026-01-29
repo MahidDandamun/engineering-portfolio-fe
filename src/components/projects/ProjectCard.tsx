@@ -4,7 +4,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ExternalLink, Github, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui";
-import { Project, categoryLabels, categoryColors, difficultyLabels, difficultyColors } from "@/types";
+import {
+	Project,
+	categoryLabels,
+	categoryColorsGhibli,
+	categoryColorsJJK,
+	difficultyLabels,
+	difficultyColorsGhibli,
+	difficultyColorsJJK,
+} from "@/types";
 import { cn, normalizeImageUrl } from "@/lib/utils";
 import { useTheme } from "@/context";
 import { getTechIcon } from "@/lib/dummyData";
@@ -22,10 +30,10 @@ function TechBadge({ tech, isGhibli }: { tech: string; isGhibli: boolean }) {
 	return (
 		<span
 			className={cn(
-				"inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-lg border transition-colors",
+				"inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-lg border transition-colors font-medium",
 				isGhibli
-					? "bg-white/60 text-slate-600 border-slate-200/50"
-					: "bg-white/5 text-white/70 border-white/10",
+					? "bg-[#f7f0e3] text-[#6e3f28] border-[#d64550]/25 hover:border-[#d64550]/50 hover:bg-[#d64550]/10"
+					: "bg-white/5 text-white/70 border-[#8b5cf6]/20 hover:border-[#8b5cf6]/40",
 			)}
 		>
 			{iconUrl && (
@@ -48,6 +56,10 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 	const router = useRouter();
 	const safeThumbnail = normalizeImageUrl(project.thumbnail);
 
+	// Use theme-appropriate colors
+	const categoryColors = isGhibli ? categoryColorsGhibli : categoryColorsJJK;
+	const difficultyColors = isGhibli ? difficultyColorsGhibli : difficultyColorsJJK;
+
 	const handleNavigate = () => {
 		router.push(`/projects/${project.slug}`);
 	};
@@ -65,15 +77,15 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, margin: "-20px" }}
 			transition={{ duration: 0.4, delay: index * 0.1 }}
-			className="group relative"
+			className="group relative h-full"
 		>
 			<motion.div
 				whileHover={{ y: -8 }}
 				transition={{ type: "spring", stiffness: 300, damping: 20 }}
 				className={cn(
-					"relative overflow-hidden rounded-2xl backdrop-blur-sm border transition-all duration-300 cursor-pointer",
+					"relative overflow-hidden rounded-2xl backdrop-blur-sm border transition-all duration-300 cursor-pointer h-full flex flex-col",
 					isGhibli
-						? "bg-white/80 border-slate-200/50 hover:shadow-xl hover:shadow-amber-100/30"
+						? "bg-white/90 border-[#6cb65f]/30 hover:shadow-2xl hover:shadow-[#6e3f28]/20 hover:border-[#0e3b6c]/40"
 						: "bg-linear-to-br from-white/5 to-white/2 border-white/10 hover:border-purple-500/30",
 				)}
 				onClick={handleNavigate}
@@ -129,8 +141,8 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 								className={cn(
 									"border",
 									isGhibli
-										? "bg-amber-100/90 text-amber-700 border-amber-300"
-										: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+										? "bg-[#d64550]/20 text-[#a62c2c] border-[#d64550]/40"
+										: "bg-[#fbbf24]/20 text-[#fbbf24] border-[#fbbf24]/30",
 								)}
 							>
 								⭐ Featured
@@ -148,15 +160,15 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 				</div>
 
 				{/* Content */}
-				<div className="relative p-6 space-y-4">
+				<div className="relative p-6 space-y-4 grow flex flex-col">
 					{/* Title & Difficulty */}
 					<div className="space-y-2">
 						<div className="flex items-start justify-between gap-4">
 							<h3
 								className={cn(
-									"text-xl font-semibold transition-colors",
+									"text-xl font-bold transition-colors",
 									isGhibli
-										? "text-slate-800 group-hover:text-red-500"
+										? "text-[#0e3b6c] group-hover:text-[#d64550]"
 										: "text-white group-hover:text-violet-400",
 								)}
 							>
@@ -169,7 +181,7 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 						<p
 							className={cn(
 								"line-clamp-2 leading-relaxed",
-								isGhibli ? "text-slate-600" : "text-white/60",
+								isGhibli ? "text-[#6e3f28]" : "text-white/60",
 							)}
 						>
 							{project.summary}
@@ -177,17 +189,17 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 					</div>
 
 					{/* Tech Stack with icons */}
-					<div className="flex flex-wrap gap-2">
+					<div className="flex flex-wrap gap-2 grow">
 						{project.techStack.slice(0, 4).map((tech) => (
 							<TechBadge key={tech} tech={tech} isGhibli={isGhibli} />
 						))}
 						{project.techStack.length > 4 && (
 							<span
 								className={cn(
-									"px-2.5 py-1 text-xs rounded-lg border",
+									"px-2.5 py-1 text-xs rounded-lg border font-medium",
 									isGhibli
-										? "bg-slate-100 text-slate-500 border-slate-200"
-										: "bg-white/5 text-white/50 border-white/10",
+										? "bg-[#0e3b6c]/10 text-[#0e3b6c] border-[#0e3b6c]/25"
+										: "bg-[#8b5cf6]/10 text-[#a78bfa] border-[#8b5cf6]/20",
 								)}
 							>
 								+{project.techStack.length - 4} more
@@ -196,7 +208,7 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 					</div>
 
 					{/* Links & CTA */}
-					<div className="flex items-center justify-between pt-2">
+					<div className="flex items-center justify-between pt-2 mt-auto">
 						<div className="flex items-center gap-3">
 							{project.githubUrl && (
 								<motion.a
@@ -207,9 +219,9 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 									whileHover={{ scale: 1.1 }}
 									whileTap={{ scale: 0.95 }}
 									className={cn(
-										"p-2 rounded-lg transition-colors",
+										"p-2 rounded-lg transition-colors cursor-pointer",
 										isGhibli
-											? "bg-slate-100 text-slate-500 hover:text-slate-800 hover:bg-slate-200"
+											? "bg-[#6cb65f]/20 text-[#6e3f28] hover:text-[#0e3b6c] hover:bg-[#6cb65f]/30"
 											: "bg-white/5 text-white/60 hover:text-white hover:bg-white/10",
 									)}
 								>
@@ -225,9 +237,9 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 									whileHover={{ scale: 1.1 }}
 									whileTap={{ scale: 0.95 }}
 									className={cn(
-										"p-2 rounded-lg transition-colors",
+										"p-2 rounded-lg transition-colors cursor-pointer",
 										isGhibli
-											? "bg-slate-100 text-slate-500 hover:text-slate-800 hover:bg-slate-200"
+											? "bg-[#6cb65f]/20 text-[#6e3f28] hover:text-[#0e3b6c] hover:bg-[#6cb65f]/30"
 											: "bg-white/5 text-white/60 hover:text-white hover:bg-white/10",
 									)}
 								>
@@ -238,9 +250,9 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 
 						<span
 							className={cn(
-								"flex items-center gap-2 text-sm transition-colors",
+								"flex items-center gap-2 text-sm font-semibold transition-colors",
 								isGhibli
-									? "text-red-500 group-hover:text-red-600"
+									? "text-[#0e3b6c] group-hover:text-[#d64550]"
 									: "text-violet-400 group-hover:text-violet-300",
 							)}
 						>

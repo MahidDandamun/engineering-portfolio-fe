@@ -12,35 +12,13 @@ export function ThemeBackground() {
 			{/* Base gradient */}
 			<div
 				className={`absolute inset-0 transition-all duration-700 ${
-					isGhibli
-						? "bg-[image:var(--gradient-warm)] opacity-80"
-						: "bg-[image:var(--gradient-cursed)] opacity-90"
+					isGhibli ? "bg-(image:--gradient-warm) opacity-80" : "bg-(image:--gradient-cursed) opacity-90"
 				}`}
 			/>
 
-			{/* Ghibli Light Mode - Handled by GhibliBackground.tsx now */}
-			{/* We keep this clean to allow the new GhibliBackground component to handle the decor */}
-
-			{/* JJK Dark Mode - Cursed Energy Atmosphere */}
-					<motion.div
-						className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-20"
-						style={{ background: "radial-gradient(circle, #ef4444 0%, transparent 70%)" }}
-						animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
-						transition={{ duration: 8, repeat: Infinity }}
-					/>
-					<motion.div
-						className="absolute top-1/3 right-1/4 w-80 h-80 rounded-full blur-3xl opacity-20"
-						style={{ background: "radial-gradient(circle, #f59e0b 0%, transparent 70%)" }}
-						animate={{ scale: [1.2, 1, 1.2], opacity: [0.15, 0.25, 0.15] }}
-						transition={{ duration: 10, repeat: Infinity }}
-					/>
-					<motion.div
-						className="absolute bottom-1/4 left-1/3 w-72 h-72 rounded-full blur-3xl opacity-20"
-						style={{ background: "radial-gradient(circle, #3b82f6 0%, transparent 70%)" }}
-						animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.3, 0.2] }}
-						transition={{ duration: 9, repeat: Infinity }}
-					/>
-
+			{/* Ghibli Light Mode - Decor (Characters & Nature) */}
+			{isGhibli && (
+				<>
 					{/* Soot Sprites scattered around */}
 					<div className="absolute bottom-20 left-10 opacity-50">
 						<SootSprite size={20} delay={0} />
@@ -90,21 +68,27 @@ export function ThemeBackground() {
 									cy="6"
 									rx="5"
 									ry="3"
-									fill={i % 3 === 0 ? "#fecdd3" : i % 3 === 1 ? "#fed7aa" : "#fde68a"}
-									opacity="0.8"
+									fill={
+										i % 3 === 0
+											? "var(--ghibli-pink)"
+											: i % 3 === 1
+												? "var(--ghibli-terracotta)"
+												: "var(--ghibli-sage)"
+									}
+									opacity="0.6"
 								/>
 							</svg>
 						</motion.div>
 					))}
 
-					{/* Grass silhouette at bottom */}
-					<div className="absolute bottom-0 left-0 right-0 h-16 opacity-20">
+					{/* Grass silhouette at bottom - Updated to Sage Green */}
+					<div className="absolute bottom-0 left-0 right-0 h-16 opacity-30">
 						<svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1200 64">
 							{[...Array(60)].map((_, i) => (
 								<path
 									key={i}
 									d={`M${i * 20} 64 Q${i * 20 + 5} ${30 + (i % 5) * 4} ${i * 20 + 10} 64`}
-									fill="#22c55e"
+									fill="var(--ghibli-sage)"
 								/>
 							))}
 						</svg>

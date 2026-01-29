@@ -8,6 +8,8 @@ import { z } from "zod";
 import { Mail, MapPin, Github, Linkedin, Twitter, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { PageWrapper, Section, SectionHeader } from "@/components/layout";
 import { Button, Input, Textarea, ErrorBoundary } from "@/components/ui";
+import { useTheme } from "@/context";
+import { cn } from "@/lib/utils";
 
 const contactSchema = z.object({
 	name: z.string().min(2, "Name must be at least 2 characters"),
@@ -46,6 +48,7 @@ const socialLinks = [
 export default function ContactPage() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+	const { isGhibli } = useTheme();
 
 	const {
 		register,
@@ -56,7 +59,8 @@ export default function ContactPage() {
 		resolver: zodResolver(contactSchema),
 	});
 
-	const onSubmit = async (data: ContactFormData) => {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const onSubmit = async (_data: ContactFormData) => {
 		setIsSubmitting(true);
 		setSubmitStatus(null);
 
@@ -64,8 +68,7 @@ export default function ContactPage() {
 			// Simulate API call
 			await new Promise((resolve) => setTimeout(resolve, 1500));
 
-			// In production, you would send this to your backend
-			console.log("Form submitted:", data);
+			// TODO: In production, send _data to your backend API
 
 			setSubmitStatus("success");
 			reset();
@@ -101,22 +104,51 @@ export default function ContactPage() {
 										initial={{ opacity: 0, y: 20 }}
 										animate={{ opacity: 1, y: 0 }}
 										transition={{ delay: 0.3 + index * 0.1 }}
-										className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10"
+										className={cn(
+											"flex items-center gap-4 p-4 rounded-xl border",
+											isGhibli ? "bg-white/80 border-[#d64550]/30" : "bg-white/5 border-white/10",
+										)}
 									>
-										<div className="p-3 rounded-xl bg-violet-500/10 border border-violet-500/20">
-											<item.icon className="w-5 h-5 text-violet-400" />
+										<div
+											className={cn(
+												"p-3 rounded-xl border",
+												isGhibli
+													? "bg-[#d64550]/10 border-[#d64550]/20"
+													: "bg-violet-500/10 border-violet-500/20",
+											)}
+										>
+											<item.icon
+												className={cn(
+													"w-5 h-5",
+													isGhibli ? "text-[#a62c2c]" : "text-violet-400",
+												)}
+											/>
 										</div>
 										<div>
-											<p className="text-sm text-white/50">{item.label}</p>
+											<p
+												className={cn(
+													"text-sm",
+													isGhibli ? "text-[#6e3f28]/60" : "text-white/50",
+												)}
+											>
+												{item.label}
+											</p>
 											{item.href ? (
 												<a
 													href={item.href}
-													className="text-white hover:text-violet-400 transition-colors"
+													className={cn(
+														"transition-colors",
+														isGhibli
+															? "text-[#0e3b6c] hover:text-[#d64550]"
+															: "text-white hover:text-violet-400",
+													)}
 												>
 													{item.value}
 												</a>
 											) : (
-												<p className="text-white">{item.value}</p>
+												<p className={isGhibli ? "text-[#0e3b6c]" : "text-white"}>
+													{item.value}
+												</p>
 											)}
 										</div>
 									</motion.div>
@@ -130,7 +162,9 @@ export default function ContactPage() {
 								transition={{ delay: 0.5 }}
 								className="space-y-4"
 							>
-								<h3 className="text-lg font-semibold text-white">Connect with me</h3>
+								<h3 className={cn("text-lg font-semibold", isGhibli ? "text-[#0e3b6c]" : "text-white")}>
+									Connect with me
+								</h3>
 								<div className="flex gap-3">
 									{socialLinks.map((link) => (
 										<motion.a
@@ -140,7 +174,12 @@ export default function ContactPage() {
 											rel="noopener noreferrer"
 											whileHover={{ scale: 1.1, y: -2 }}
 											whileTap={{ scale: 0.95 }}
-											className="p-4 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all"
+											className={cn(
+												"p-4 rounded-xl border transition-all",
+												isGhibli
+													? "bg-white/80 border-[#d64550]/30 text-[#6e3f28]/60 hover:text-[#0e3b6c] hover:bg-[#d64550]/10"
+													: "bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10",
+											)}
 										>
 											<link.icon className="w-6 h-6" />
 										</motion.a>
@@ -155,9 +194,26 @@ export default function ContactPage() {
 								transition={{ delay: 0.6 }}
 								className="hidden lg:block relative h-48"
 							>
-								<div className="absolute inset-0 bg-linear-to-br from-violet-500/20 to-cyan-500/20 rounded-2xl blur-2xl" />
-								<div className="relative h-full rounded-2xl border border-white/10 bg-white/5 p-6 flex items-center justify-center">
-									<p className="text-center text-white/50 text-sm">
+								<div
+									className={cn(
+										"absolute inset-0 rounded-2xl blur-2xl",
+										isGhibli
+											? "bg-linear-to-br from-[#d64550]/20 to-[#0e3b6c]/20"
+											: "bg-linear-to-br from-violet-500/20 to-cyan-500/20",
+									)}
+								/>
+								<div
+									className={cn(
+										"relative h-full rounded-2xl border p-6 flex items-center justify-center",
+										isGhibli ? "bg-white/80 border-[#d64550]/30" : "bg-white/5 border-white/10",
+									)}
+								>
+									<p
+										className={cn(
+											"text-center text-sm",
+											isGhibli ? "text-[#6e3f28]/60" : "text-white/50",
+										)}
+									>
 										💡 I typically respond within 24-48 hours
 									</p>
 								</div>
@@ -173,7 +229,10 @@ export default function ContactPage() {
 						>
 							<form
 								onSubmit={handleSubmit(onSubmit)}
-								className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-6"
+								className={cn(
+									"p-8 rounded-2xl border backdrop-blur-sm space-y-6",
+									isGhibli ? "bg-white/80 border-[#d64550]/30" : "bg-white/5 border-white/10",
+								)}
 							>
 								<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 									<Input

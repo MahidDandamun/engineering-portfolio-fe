@@ -28,8 +28,8 @@ export default function AdminProjectsPage() {
 		try {
 			await deleteProject.mutateAsync(deleteModal._id);
 			setDeleteModal(null);
-		} catch (error) {
-			console.error("Failed to delete project:", error);
+		} catch {
+			// Error is handled by the mutation's onError callback
 		}
 	};
 

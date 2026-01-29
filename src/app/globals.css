@@ -6,39 +6,40 @@
 
 :root {
 	/* Light Mode - Spirited Away Inspired */
-	--background: #f5f0e8; /* Soft cream - bathhouse walls */
-	--background-secondary: #ebf0e4; /* Pale sage - natural calm */
-	--foreground: #3a3632; /* Deep warm gray - readable */
-	--foreground-secondary: #6b645e; /* Medium warm gray */
+	--background: #f7f0e3; /* Cream/Beige - Background */
+	--background-secondary: #eae4d3; /* Slightly darker cream */
+	--foreground: #000000; /* Black from palette */
+	--foreground-secondary: #6e3f28; /* Brown from palette */
 
 	/* Spirited Away Color Palette */
-	--primary: #e8a5a5; /* Soft coral pink - Chihiro's outfit */
-	--primary-light: #f0bcb7;
-	--secondary: #8b9d83; /* Sage green - natural, calming */
-	--secondary-light: #a8b89e;
-	--accent: #c17b6c; /* Warm terracotta - bathhouse accents */
-	--accent-light: #d99a8c;
+	--primary: #d64550; /* Red/Pink */
+	--primary-light: #ee6c72; /* Salmon */
+	--secondary: #6cb65f; /* Green */
+	--secondary-light: #399e90; /* Teal/Blue-Green */
+	--accent: #0e3b6c; /* Dark Blue */
+	--accent-light: #1a5b8c; /* Slightly lighter blue */
 
 	/* Spirited Away Natural Tones */
-	--ghibli-pink: #e8a5a5; /* Chihiro pink */
-	--ghibli-sage: #8b9d83; /* Calming sage */
-	--ghibli-terracotta: #c17b6c; /* Warm clay */
-	--ghibli-wood: #8b6f47; /* Warm wood */
-	--ghibli-cream: #f5f0e8; /* Soft cream */
-	--ghibli-muted-red: #b85c5c; /* Softer red accent */
+	--ghibli-pink: #d64550; /* Red/Pink from palette */
+	--ghibli-sage: #6cb65f; /* Green from palette */
+	--ghibli-terracotta: #a62c2c; /* Dark Red from palette */
+	--ghibli-wood: #6e3f28; /* Brown from palette */
+	--ghibli-cream: #f7f0e3; /* Cream from palette */
+	--ghibli-teal: #399e90; /* Teal from palette */
+	--ghibli-muted-red: #ee6c72; /* Salmon from palette */
 
 	/* Soft Gradients */
-	--gradient-primary: linear-gradient(135deg, #e8a5a5 0%, #c17b6c 50%, #8b9d83 100%);
-	--gradient-warm: linear-gradient(135deg, #f5f0e8 0%, #ebf0e4 100%);
-	--gradient-soft: linear-gradient(135deg, #f0bcb7 0%, #e8a5a5 100%);
+	--gradient-primary: linear-gradient(135deg, #d64550 0%, #a62c2c 50%, #6e3f28 100%);
+	--gradient-warm: linear-gradient(135deg, #f7f0e3 0%, #ee6c72 100%);
+	--gradient-soft: linear-gradient(135deg, #ee6c72 0%, #d64550 100%);
 
 	/* Glass effect - softer */
-	--glass-bg: rgba(245, 240, 232, 0.85);
-	--glass-border: rgba(139, 157, 131, 0.3);
+	--glass-bg: rgba(247, 240, 227, 0.85);
+	--glass-border: rgba(108, 182, 95, 0.3);
 
 	/* Shadows - very soft */
-	--shadow-color: rgba(193, 123, 108, 0.08);
-	--shadow-lg: 0 20px 40px rgba(139, 157, 131, 0.1), 0 10px 20px rgba(232, 165, 165, 0.08);
+	--shadow-color: rgba(110, 63, 40, 0.08); /* Brown hue shadow */
+	--shadow-lg: 0 20px 40px rgba(108, 182, 95, 0.1), 0 10px 20px rgba(214, 69, 80, 0.08);
 }
 
 .dark {
@@ -96,13 +97,13 @@ body:not(.dark)::before {
 	right: 0;
 	height: 100vh;
 	background-image:
-		linear-gradient(135deg, transparent 0%, rgba(139, 157, 131, 0.02) 50%, transparent 100%),
+		linear-gradient(135deg, transparent 0%, rgba(108, 182, 95, 0.03) 50%, transparent 100%),
 		repeating-linear-gradient(
 			90deg,
-			rgba(232, 165, 165, 0.03) 0px,
+			rgba(214, 69, 80, 0.02) 0px,
 			transparent 2px,
 			transparent 40px,
-			rgba(139, 157, 131, 0.03) 42px
+			rgba(108, 182, 95, 0.02) 42px
 		);
 	pointer-events: none;
 	z-index: 0;
@@ -158,6 +159,46 @@ body > * {
 	}
 }
 
+/* Eccentric wobble animation */
+@keyframes eccentric-wobble {
+	0%,
+	100% {
+		transform: rotate(-1deg) scale(1);
+	}
+	25% {
+		transform: rotate(1deg) scale(1.01);
+	}
+	50% {
+		transform: rotate(-0.5deg) scale(1);
+	}
+	75% {
+		transform: rotate(0.5deg) scale(0.99);
+	}
+}
+
+/* Magical sparkle */
+@keyframes sparkle {
+	0%,
+	100% {
+		opacity: 0;
+		transform: scale(0) rotate(0deg);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1) rotate(180deg);
+	}
+}
+
+/* Text shimmer for headers */
+@keyframes text-shimmer {
+	0% {
+		background-position: -200% center;
+	}
+	100% {
+		background-position: 200% center;
+	}
+}
+
 /* Rainbow shimmer */
 @keyframes rainbow-shimmer {
 	0% {
@@ -181,6 +222,38 @@ body > * {
 		transform: translateY(100vh) rotate(720deg);
 		opacity: 0;
 	}
+}
+
+/* Eccentric button hover pulse */
+@keyframes button-pulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgba(214, 69, 80, 0.4);
+	}
+	50% {
+		box-shadow: 0 0 0 10px rgba(214, 69, 80, 0);
+	}
+}
+
+/* Ghibli-specific utility classes */
+:root .ghibli-hover:hover {
+	animation: eccentric-wobble 0.5s ease-in-out;
+}
+
+:root .ghibli-text-shimmer {
+	background: linear-gradient(
+		90deg,
+		var(--ghibli-wood) 0%,
+		var(--ghibli-pink) 25%,
+		var(--ghibli-teal) 50%,
+		var(--ghibli-sage) 75%,
+		var(--ghibli-wood) 100%
+	);
+	background-size: 200% auto;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	animation: text-shimmer 4s linear infinite;
 }
 
 /* ===================================
@@ -263,21 +336,37 @@ body > * {
 
 /* Ghibli styles (light mode) */
 :root .ghibli-card {
-	background: linear-gradient(145deg, #ffffff, #fef9f3);
-	border: 2px solid var(--ghibli-peach);
+	background: linear-gradient(145deg, #ffffff, #f7f0e3);
+	border: 2px solid rgba(108, 182, 95, 0.3);
 	border-radius: 24px;
 	box-shadow:
-		0 10px 40px rgba(231, 76, 60, 0.1),
-		0 4px 12px rgba(243, 156, 18, 0.08);
+		0 10px 40px rgba(110, 63, 40, 0.08),
+		0 4px 12px rgba(108, 182, 95, 0.06);
+	transition: all 0.3s ease;
+}
+
+:root .ghibli-card:hover {
+	border-color: rgba(14, 59, 108, 0.4);
+	box-shadow:
+		0 20px 60px rgba(110, 63, 40, 0.12),
+		0 8px 24px rgba(214, 69, 80, 0.08);
 }
 
 :root .ghibli-button {
-	background: var(--gradient-rainbow);
+	background: linear-gradient(135deg, #a62c2c 0%, #d64550 50%, #0e3b6c 100%);
 	background-size: 200% 200%;
 	animation: rainbow-shimmer 3s ease infinite;
 	border-radius: 50px;
 	color: white;
 	font-weight: 600;
+	transition: all 0.3s ease;
+}
+
+:root .ghibli-button:hover {
+	animation:
+		rainbow-shimmer 1.5s ease infinite,
+		button-pulse 1.5s ease infinite;
+	transform: translateY(-2px);
 }
 
 :root .ghibli-float {
@@ -325,7 +414,7 @@ body > * {
 }
 
 :root .gradient-text {
-	background: var(--gradient-rainbow);
+	background: linear-gradient(135deg, #0e3b6c 0%, #d64550 25%, #6cb65f 50%, #399e90 75%, #0e3b6c 100%);
 	background-size: 200% 200%;
 	animation: rainbow-shimmer 4s ease infinite;
 	-webkit-background-clip: text;
@@ -351,12 +440,16 @@ body > * {
 }
 
 :root ::-webkit-scrollbar-track {
-	background: var(--ghibli-peach);
+	background: #f7f0e3;
 }
 
 :root ::-webkit-scrollbar-thumb {
-	background: linear-gradient(180deg, var(--primary), var(--secondary));
+	background: linear-gradient(180deg, #d64550, #6cb65f);
 	border-radius: 5px;
+}
+
+:root ::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, #a62c2c, #399e90);
 }
 
 .dark ::-webkit-scrollbar-track {
@@ -373,8 +466,8 @@ body > * {
    =================================== */
 
 :root ::selection {
-	background: rgba(231, 76, 60, 0.3);
-	color: #2d3436;
+	background: rgba(214, 69, 80, 0.3);
+	color: #0e3b6c;
 }
 
 .dark ::selection {

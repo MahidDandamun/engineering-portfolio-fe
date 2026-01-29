@@ -76,9 +76,11 @@ export function SootSprite({
 					key={i}
 					animate={{ scale: [1, 1.2, 1] }}
 					transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.1 }}
-					transformOrigin={`${25 + Math.cos((i * 30 * Math.PI) / 180) * 16}px ${
-						25 + Math.sin((i * 30 * Math.PI) / 180) * 16
-					}px`}
+					style={{
+						transformOrigin: `${25 + Math.cos((i * 30 * Math.PI) / 180) * 16}px ${
+							25 + Math.sin((i * 30 * Math.PI) / 180) * 16
+						}px`,
+					}}
 				>
 					<circle
 						cx={25 + Math.cos((i * 30 * Math.PI) / 180) * 16}

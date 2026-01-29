@@ -22,9 +22,11 @@ const createWrapper = () => {
 			queries: { retry: false },
 		},
 	});
-	return ({ children }: { children: ReactNode }) => (
+	const Wrapper = ({ children }: { children: ReactNode }) => (
 		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 	);
+	Wrapper.displayName = "TestWrapper";
+	return Wrapper;
 };
 
 describe("useCertificates", () => {
@@ -33,7 +35,7 @@ describe("useCertificates", () => {
 	});
 
 	it("fetches certificates successfully", async () => {
-		(certificatesApi.getAll as any).mockResolvedValue({
+		vi.mocked(certificatesApi.getAll).mockResolvedValue({
 			success: true,
 			data: [{ _id: "1", title: "AWS Solutions Architect" }],
 		});

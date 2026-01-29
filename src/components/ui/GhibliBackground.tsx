@@ -2,23 +2,154 @@
 
 import { useTheme } from "@/context";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+const SootSprite = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
+	<svg viewBox="0 0 100 100" className={className} style={style}>
+		<defs>
+			<filter id="fuzzy">
+				<feTurbulence
+					type="fractalNoise"
+					baseFrequency="0.8"
+					numOctaves="3"
+					stitchTiles="stitch"
+					result="noise"
+				/>
+				<feDisplacementMap in="SourceGraphic" in2="noise" scale="6" />
+			</filter>
+		</defs>
+		<circle cx="50" cy="50" r="35" fill="black" filter="url(#fuzzy)" />
+		{/* Eyes */}
+		<g className="eyes">
+			<circle cx="35" cy="45" r="8" fill="white" />
+			<circle cx="35" cy="45" r="3" fill="black" />
+			<circle cx="65" cy="45" r="8" fill="white" />
+			<circle cx="65" cy="45" r="3" fill="black" />
+		</g>
+	</svg>
+);
 
 export function GhibliBackground() {
 	const { isGhibli } = useTheme();
+	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+	useEffect(() => {
+		const handleMouseMove = (e: MouseEvent) => {
+			setMousePosition({
+				x: e.clientX,
+				y: e.clientY,
+			});
+		};
+
+		window.addEventListener("mousemove", handleMouseMove);
+		return () => window.removeEventListener("mousemove", handleMouseMove);
+	}, []);
 
 	if (!isGhibli) return null;
 
 	return (
 		<div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-			{/* Floating clouds */}
-			<motion.div
-				className="absolute top-20 -left-32 w-64 h-32 rounded-full opacity-30"
+			{/* Background Gradient */}
+			<div
+				className="absolute inset-0 opacity-40"
 				style={{
-					background: "radial-gradient(circle, rgba(235, 240, 228, 0.6) 0%, transparent 70%)",
+					background: "radial-gradient(circle at 50% 50%, var(--ghibli-cream) 0%, transparent 100%)",
+				}}
+			/>
+
+			{/* Floating Soot Sprites */}
+			<motion.div
+				className="absolute top-[20%] left-[10%] w-12 h-12 md:w-16 md:h-16 z-10"
+				animate={{
+					x: mousePosition.x * 0.02,
+					y: mousePosition.y * 0.02,
+					rotate: [0, 5, -5, 0],
+				}}
+				transition={{
+					rotate: {
+						duration: 2,
+						repeat: Infinity,
+						ease: "easeInOut",
+					},
+					default: {
+						type: "spring",
+						damping: 20,
+						stiffness: 100,
+					},
+				}}
+			>
+				<SootSprite />
+			</motion.div>
+
+			<motion.div
+				className="absolute bottom-[20%] right-[15%] w-10 h-10 md:w-14 md:h-14 z-10"
+				animate={{
+					x: mousePosition.x * -0.03,
+					y: mousePosition.y * -0.03,
+					rotate: [0, -10, 10, 0],
+				}}
+				transition={{
+					rotate: {
+						duration: 3,
+						repeat: Infinity,
+						ease: "easeInOut",
+					},
+					default: {
+						type: "spring",
+						damping: 15,
+						stiffness: 80,
+					},
+				}}
+			>
+				<SootSprite />
+			</motion.div>
+
+			<motion.div
+				className="absolute top-[60%] left-[60%] w-8 h-8 md:w-12 md:h-12 opacity-80 z-10"
+				animate={{
+					x: mousePosition.x * 0.015,
+					y: [mousePosition.y * 0.015, mousePosition.y * 0.015 - 20, mousePosition.y * 0.015],
+				}}
+				transition={{
+					y: {
+						duration: 4,
+						repeat: Infinity,
+						ease: "easeInOut",
+					},
+					default: {
+						type: "spring",
+						damping: 25,
+					},
+				}}
+			>
+				<SootSprite />
+			</motion.div>
+
+			{/* Floating colored orbs (Spirited Away Palette) */}
+			<motion.div
+				className="absolute top-20 -left-32 w-64 h-32 rounded-full opacity-20"
+				style={{
+					background: "radial-gradient(circle, var(--ghibli-sage) 0%, transparent 70%)",
 				}}
 				animate={{
-					x: [0, 100, 0],
+					x: [0, 50, 0],
 					y: [0, -20, 0],
+				}}
+				transition={{
+					duration: 15,
+					repeat: Infinity,
+					ease: "easeInOut",
+				}}
+			/>
+
+			<motion.div
+				className="absolute top-1/3 -right-40 w-80 h-40 rounded-full opacity-20"
+				style={{
+					background: "radial-gradient(circle, var(--ghibli-pink) 0%, transparent 70%)",
+				}}
+				animate={{
+					x: [0, -40, 0],
+					y: [0, 30, 0],
 				}}
 				transition={{
 					duration: 20,
@@ -28,71 +159,24 @@ export function GhibliBackground() {
 			/>
 
 			<motion.div
-				className="absolute top-1/3 -right-40 w-80 h-40 rounded-full opacity-30"
+				className="absolute bottom-1/4 -left-24 w-56 h-28 rounded-full opacity-20"
 				style={{
-					background: "radial-gradient(circle, rgba(232, 165, 165, 0.4) 0%, transparent 70%)",
+					background: "radial-gradient(circle, var(--ghibli-teal) 0%, transparent 70%)",
 				}}
 				animate={{
-					x: [0, -80, 0],
-					y: [0, 30, 0],
-				}}
-				transition={{
-					duration: 25,
-					repeat: Infinity,
-					ease: "easeInOut",
-				}}
-			/>
-
-			<motion.div
-				className="absolute bottom-1/4 -left-24 w-56 h-28 rounded-full opacity-30"
-				style={{
-					background: "radial-gradient(circle, rgba(139, 157, 131, 0.5) 0%, transparent 70%)",
-				}}
-				animate={{
-					x: [0, 120, 0],
+					x: [0, 60, 0],
 					y: [0, -15, 0],
 				}}
 				transition={{
-					duration: 22,
+					duration: 18,
 					repeat: Infinity,
 					ease: "easeInOut",
 				}}
 			/>
 
-			{/* Decorative corner elements */}
-			<div className="absolute top-0 left-0 w-64 h-64 opacity-20">
-				<div
-					className="absolute top-8 left-8 w-3 h-3 rounded-full"
-					style={{ backgroundColor: "var(--ghibli-sage)" }}
-				/>
-				<div
-					className="absolute top-16 left-4 w-2 h-2 rounded-full"
-					style={{ backgroundColor: "var(--ghibli-terracotta)" }}
-				/>
-				<div
-					className="absolute top-24 left-12 w-2.5 h-2.5 rounded-full"
-					style={{ backgroundColor: "var(--ghibli-pink)" }}
-				/>
-			</div>
-
-			<div className="absolute bottom-0 right-0 w-64 h-64 opacity-20">
-				<div
-					className="absolute bottom-8 right-8 w-3 h-3 rounded-full"
-					style={{ backgroundColor: "var(--ghibli-pink)" }}
-				/>
-				<div
-					className="absolute bottom-16 right-4 w-2 h-2 rounded-full"
-					style={{ backgroundColor: "var(--ghibli-sage)" }}
-				/>
-				<div
-					className="absolute bottom-24 right-12 w-2.5 h-2.5 rounded-full"
-					style={{ backgroundColor: "var(--ghibli-terracotta)" }}
-				/>
-			</div>
-
 			{/* Subtle grain texture */}
 			<div
-				className="absolute inset-0 opacity-30"
+				className="absolute inset-0 opacity-20"
 				style={{
 					backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E")`,
 					backgroundSize: "200px 200px",

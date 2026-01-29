@@ -61,8 +61,8 @@ export default function NewProjectPage() {
 				thumbnail: data.thumbnail || undefined,
 			});
 			router.push("/admin/projects");
-		} catch (error) {
-			console.error("Failed to create project:", error);
+		} catch {
+			// Error is handled by the mutation's onError callback
 		}
 	};
 
