@@ -49,7 +49,7 @@ export default function LoginPage() {
 		<div className="min-h-screen flex items-center justify-center p-4">
 			{/* Background effects */}
 			<div className="fixed inset-0 z-0">
-				<div className="absolute inset-0 bg-linear-to-br from-slate-950 via-slate-900 to-slate-950" />
+				<div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950" />
 				<div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
 				<div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
 			</div>
@@ -64,12 +64,12 @@ export default function LoginPage() {
 						initial={{ scale: 0.5, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{ delay: 0.1 }}
-						className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-violet-500 to-cyan-500 mb-4"
+						className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 mb-4"
 					>
 						<Lock className="w-8 h-8 text-white" />
 					</motion.div>
-					<h1 className="text-3xl font-bold text-white">Admin Login</h1>
-					<p className="text-white/60 mt-2">Enter your credentials to access the admin panel</p>
+					<h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Login</h1>
+					<p className="text-slate-600 dark:text-white/60 mt-2">Enter your credentials to access the admin panel</p>
 				</div>
 
 				<motion.form
@@ -77,13 +77,13 @@ export default function LoginPage() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.2 }}
 					onSubmit={handleSubmit(onSubmit)}
-					className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm space-y-6"
+					className="p-8 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-sm space-y-6 shadow-lg dark:shadow-none"
 				>
 					{error && (
 						<motion.div
 							initial={{ opacity: 0, y: -10 }}
 							animate={{ opacity: 1, y: 0 }}
-							className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400"
+							className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 dark:text-red-400"
 						>
 							<AlertCircle className="w-5 h-5 shrink-0" />
 							<p className="text-sm">{error}</p>
@@ -115,7 +115,7 @@ export default function LoginPage() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 0.4 }}
-					className="text-center text-white/40 text-sm mt-6"
+					className="text-center text-slate-500 dark:text-white/40 text-sm mt-6"
 				>
 					Protected area. Authorized personnel only.
 				</motion.p>
