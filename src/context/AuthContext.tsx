@@ -18,13 +18,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const pathname = usePathname();
-	const [isLoading, setIsLoading] = useState(() => pathname?.startsWith("/admin") ?? false);
+	const [isLoading, setIsLoading] = useState(() => pathname?.startsWith("/admin") && pathname !== "/admin/login");
 	const router = useRouter();
 
 	useEffect(() => {
 		let isMounted = true;
 
-		if (!pathname?.startsWith("/admin")) {
+		// Skip auth check for login page and non-admin routes
+		if (!pathname?.startsWith("/admin") || pathname === "/admin/login") {
+			setIsLoading(false);
 			return;
 		}
 
