@@ -4,7 +4,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { certificatesApi } from "@/lib/certificates";
 import { CreateCertificateDTO, UpdateCertificateDTO } from "@/types";
-import { dummyCertificates } from "@/lib/dummyData";
 
 export const certificateKeys = {
 	all: ["certificates"] as const,
@@ -17,30 +16,14 @@ export const certificateKeys = {
 export function useCertificates() {
 	return useQuery({
 		queryKey: certificateKeys.list(),
-		queryFn: async () => {
-			try {
-				return await certificatesApi.getAll();
-			} catch {
-				// Fallback to dummy data if API fails
-				return { data: dummyCertificates };
-			}
-		},
+		queryFn: () => certificatesApi.getAll(),
 	});
 }
 
 export function useCertificate(id: string) {
 	return useQuery({
 		queryKey: certificateKeys.detail(id),
-		queryFn: async () => {
-			try {
-				return await certificatesApi.getById(id);
-			} catch {
-				// Fallback to dummy data if API fails
-				const cert = dummyCertificates.find((c) => c._id === id);
-				if (cert) return { data: cert };
-				throw new Error("Certificate not found");
-			}
-		},
+		queryFn: () => certificatesApi.getById(id),
 		enabled: !!id,
 	});
 }

@@ -1,4 +1,6 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+// Default to an empty base so requests are relative to the current origin
+// (works for Next API routes). Set `NEXT_PUBLIC_API_URL` to override.
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export class ApiError extends Error {
 	constructor(
@@ -20,18 +22,27 @@ export async function api<T>(endpoint: string, options: RequestInit = {}): Promi
 			credentials: "include", // Required for cookie auth
 			headers: {
 				"Content-Type": "application/json",
+				"Cache-Control": "no-cache", // Force fresh response
 				...options.headers,
 			},
 		});
 
-		const data = await res.json();
+		console.log("API Response: URL", url);
+		console.log("API Response: Status", res.status);
 
 		if (!res.ok) {
-			throw new ApiError(data.message || "Request failed", res.status, data);
+			const errorData = await res.json().catch(() => null);
+			console.error("API Error: Response", errorData);
+			throw new ApiError(errorData?.message || "Request failed", res.status, errorData);
 		}
+
+		const data = await res.json();
+
+		console.log("API Response: Data", data);
 
 		return data;
 	} catch (error) {
+		console.error("API Error", error);
 		if (error instanceof ApiError) {
 			throw error;
 		}

@@ -4,7 +4,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { projectsApi, GetProjectsParams } from "@/lib/projects";
 import { CreateProjectDTO, UpdateProjectDTO } from "@/types";
-import { dummyProjects } from "@/lib/dummyData";
 
 export const projectKeys = {
 	all: ["projects"] as const,
@@ -19,34 +18,14 @@ export const projectKeys = {
 export function useProjects(params?: GetProjectsParams) {
 	return useQuery({
 		queryKey: projectKeys.list(params),
-		queryFn: async () => {
-			try {
-				return await projectsApi.getAll(params);
-			} catch {
-				// Fallback to dummy data if API fails
-				const filtered = params?.category
-					? dummyProjects.filter((p) => p.category === params.category)
-					: dummyProjects;
-				return {
-					data: filtered,
-					pagination: { page: 1, limit: 10, total: filtered.length, totalPages: 1 },
-				};
-			}
-		},
+		queryFn: () => projectsApi.getAll(params),
 	});
 }
 
 export function useFeaturedProjects() {
 	return useQuery({
 		queryKey: projectKeys.featured(),
-		queryFn: async () => {
-			try {
-				return await projectsApi.getFeatured();
-			} catch {
-				// Fallback to dummy data if API fails
-				return { data: dummyProjects.filter((p) => p.featured) };
-			}
-		},
+		queryFn: () => projectsApi.getFeatured(),
 	});
 }
 

@@ -49,6 +49,7 @@ export default function NewProjectPage() {
 		},
 	});
 
+	// eslint-disable-next-line react-hooks/incompatible-library
 	const title = watch("title");
 
 	const onSubmit = async (data: ProjectFormData) => {

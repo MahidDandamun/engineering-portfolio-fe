@@ -29,17 +29,28 @@ const resolveTheme = (theme: Theme | ThemeAlias): Theme => {
 export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
 	const [theme, setTheme] = useState<Theme>(() => {
 		if (defaultTheme) return resolveTheme(defaultTheme);
-		if (typeof window === "undefined") return "dark";
-
-		const savedTheme = localStorage.getItem("theme") as Theme | null;
-		if (savedTheme) return savedTheme;
-
-		if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-			return "light";
-		}
-
 		return "dark";
 	});
+
+	useEffect(() => {
+		if (typeof window === "undefined") return;
+
+		const savedTheme = localStorage.getItem("theme") as Theme | null;
+		console.log("Hydration: savedTheme", savedTheme);
+
+		let initialTheme = "dark" as Theme;
+
+		if (savedTheme) {
+			initialTheme = savedTheme;
+		} else if (defaultTheme) {
+			initialTheme = resolveTheme(defaultTheme);
+		} else {
+			initialTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+		}
+
+		setTimeout(() => setTheme(initialTheme), 0);
+		console.log("Hydration: initialTheme", initialTheme);
+	}, [defaultTheme]);
 
 	useEffect(() => {
 		if (typeof window === "undefined") return;

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Lock, User, AlertCircle } from "lucide-react";
 import { Button, Input } from "@/components/ui";
-import { useAuth } from "@/context";
+import { useAuth, useTheme } from "@/context";
 
 const loginSchema = z.object({
 	username: z.string().min(1, "Username is required"),
@@ -21,6 +21,7 @@ export default function LoginPage() {
 	const [error, setError] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const { login } = useAuth();
+	const { isGhibli } = useTheme();
 	const router = useRouter();
 
 	const {
@@ -46,14 +47,7 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center p-4">
-			{/* Background effects */}
-			<div className="fixed inset-0 z-0">
-				<div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950" />
-				<div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
-				<div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-			</div>
-
+		<div className="relative min-h-screen flex items-center justify-center p-4">
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -64,12 +58,18 @@ export default function LoginPage() {
 						initial={{ scale: 0.5, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						transition={{ delay: 0.1 }}
-						className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 mb-4"
+						className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 ${
+							isGhibli
+								? "bg-linear-to-br from-[#6cb65f] to-[#d64550]"
+								: "bg-linear-to-br from-violet-500 to-cyan-500"
+						}`}
 					>
 						<Lock className="w-8 h-8 text-white" />
 					</motion.div>
-					<h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Login</h1>
-					<p className="text-slate-600 dark:text-white/60 mt-2">Enter your credentials to access the admin panel</p>
+					<h1 className={`text-3xl font-bold ${isGhibli ? "text-[#6e3f28]" : "text-white"}`}>Admin Login</h1>
+					<p className={`mt-2 ${isGhibli ? "text-[#6e3f28]/70" : "text-white/60"}`}>
+						Enter your credentials to access the admin panel
+					</p>
 				</div>
 
 				<motion.form
@@ -77,7 +77,11 @@ export default function LoginPage() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.2 }}
 					onSubmit={handleSubmit(onSubmit)}
-					className="p-8 rounded-2xl bg-white/80 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-sm space-y-6 shadow-lg dark:shadow-none"
+					className={`p-8 rounded-2xl backdrop-blur-md space-y-6 shadow-lg ${
+						isGhibli
+							? "bg-white/90 border border-[#6cb65f]/30 text-[#6e3f28] shadow-[#6e3f28]/10"
+							: "bg-slate-900/80 border border-white/10 text-white shadow-none"
+					}`}
 				>
 					{error && (
 						<motion.div
@@ -115,7 +119,7 @@ export default function LoginPage() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ delay: 0.4 }}
-					className="text-center text-slate-500 dark:text-white/40 text-sm mt-6"
+					className={`text-center text-sm mt-6 ${isGhibli ? "text-[#6e3f28]/60" : "text-white/40"}`}
 				>
 					Protected area. Authorized personnel only.
 				</motion.p>

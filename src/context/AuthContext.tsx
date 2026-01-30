@@ -18,27 +18,34 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const pathname = usePathname();
-	const [isLoading, setIsLoading] = useState(() => pathname?.startsWith("/admin") && pathname !== "/admin/login");
+	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
 
 	useEffect(() => {
 		let isMounted = true;
 
+		console.log("AuthProvider: pathname", pathname);
+
 		// Skip auth check for login page and non-admin routes
 		if (!pathname?.startsWith("/admin") || pathname === "/admin/login") {
-			setIsLoading(false);
+			console.log("AuthProvider: Skipping auth check for non-admin route");
 			return;
 		}
+
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setIsLoading(true);
 
 		authApi
 			.getMe()
 			.then((res) => {
 				if (isMounted) {
+					console.log("AuthProvider: Setting user", res.data?.user);
 					setUser(res.data?.user || null);
 				}
 			})
 			.catch(() => {
 				if (isMounted) {
+					console.log("AuthProvider: Setting user to null");
 					setUser(null);
 				}
 			})

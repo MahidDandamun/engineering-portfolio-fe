@@ -9,14 +9,13 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className = "" }: ThemeToggleProps) {
 	const { toggleTheme, isGhibli } = useTheme();
-
 	return (
 		<motion.button
 			onClick={toggleTheme}
 			className={`relative w-16 h-8 rounded-full p-1 transition-colors duration-500 ${
 				isGhibli
-					? "bg-linear-to-r from-[#d64550] via-[#a62c2c] to-[#0e3b6c]"
-					: "bg-linear-to-r from-[#8b5cf6] via-[#3b82f6] to-[#dc2626]"
+					? "bg-gradient-to-r from-[#d64550] via-[#a62c2c] to-[#0e3b6c]"
+					: "bg-gradient-to-r from-[#8b5cf6] via-[#3b82f6] to-[#dc2626]"
 			} ${className}`}
 			whileHover={{ scale: 1.05 }}
 			whileTap={{ scale: 0.95 }}
