@@ -5,22 +5,15 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Lock, User, AlertCircle } from "lucide-react";
 import { Button, Input } from "@/components/ui";
-import { useAuth, useTheme } from "@/context";
-
-const loginSchema = z.object({
-	username: z.string().min(1, "Username is required"),
-	password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { useTheme } from "@/context";
+import { signIn } from "next-auth/react";
+import { loginSchema, LoginFormData } from "@/lib/schemas/loginSchema";
 
 export default function LoginPage() {
 	const [error, setError] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const { login } = useAuth();
 	const { isGhibli } = useTheme();
 	const router = useRouter();
 
@@ -35,15 +28,17 @@ export default function LoginPage() {
 	const onSubmit = async (data: LoginFormData) => {
 		setIsLoading(true);
 		setError("");
-
-		try {
-			await login(data.username, data.password);
+		const res = await signIn("credentials", {
+			redirect: false,
+			username: data.username,
+			password: data.password,
+		});
+		if (res?.ok) {
 			router.push("/admin");
-		} catch {
+		} else {
 			setError("Invalid username or password");
-		} finally {
-			setIsLoading(false);
 		}
+		setIsLoading(false);
 	};
 
 	return (

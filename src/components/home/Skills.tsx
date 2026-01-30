@@ -2,42 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Section, SectionHeader } from "@/components/layout";
-import { Code2, Database, Palette, Cpu } from "lucide-react";
+import { SKILL_DOMAINS } from "./homeData";
 import { useTheme } from "@/context";
 import { getTechIcon } from "@/lib/dummyData";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-const skillDomains = [
-	{
-		title: "Web Development",
-		icon: Code2,
-		colorLight: "from-red-400 to-amber-400",
-		colorDark: "from-violet-500 to-purple-600",
-		skills: ["React", "Next.js", "Node.js", "Express", "TypeScript", "Tailwind CSS"],
-	},
-	{
-		title: "Data & Cloud",
-		icon: Database,
-		colorLight: "from-blue-400 to-sky-400",
-		colorDark: "from-blue-500 to-cyan-500",
-		skills: ["PostgreSQL", "MongoDB", "Docker", "AWS", "Redis", "Prisma"],
-	},
-	{
-		title: "Systems & Embedded",
-		icon: Cpu,
-		colorLight: "from-amber-400 to-yellow-300",
-		colorDark: "from-red-500 to-orange-500",
-		skills: ["C", "C++", "Python", "Linux", "Bash", "Arduino"],
-	},
-	{
-		title: "Design & Tooling",
-		icon: Palette,
-		colorLight: "from-emerald-400 to-teal-400",
-		colorDark: "from-pink-500 to-rose-500",
-		skills: ["Figma", "Blender", "Git", "VS Code", "Postman", "Jira"],
-	},
-];
+// skillDomains now imported from homeData.ts
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -102,7 +73,7 @@ export function Skills() {
 				viewport={{ once: true }}
 				className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
 			>
-				{skillDomains.map((domain) => {
+				{SKILL_DOMAINS.map((domain) => {
 					const gradientColor = isGhibli ? domain.colorLight : domain.colorDark;
 
 					return (

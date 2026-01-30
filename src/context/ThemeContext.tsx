@@ -36,7 +36,6 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
 		if (typeof window === "undefined") return;
 
 		const savedTheme = localStorage.getItem("theme") as Theme | null;
-		console.log("Hydration: savedTheme", savedTheme);
 
 		let initialTheme = "dark" as Theme;
 
@@ -49,7 +48,6 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
 		}
 
 		setTimeout(() => setTheme(initialTheme), 0);
-		console.log("Hydration: initialTheme", initialTheme);
 	}, [defaultTheme]);
 
 	useEffect(() => {

@@ -2,22 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+
 import { LayoutDashboard, Folder, Award, LogOut, Home, ChevronRight } from "lucide-react";
-import { useAuth } from "@/context";
+import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
-const sidebarLinks = [
-	{ href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-	{ href: "/admin/projects", label: "Projects", icon: Folder },
-	{ href: "/admin/certificates", label: "Certificates", icon: Award },
-];
-
 export function AdminSidebar() {
+	const sidebarLinks = [
+		{ href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+		{ href: "/admin/projects", label: "Projects", icon: Folder },
+		{ href: "/admin/certificates", label: "Certificates", icon: Award },
+	];
 	const pathname = usePathname();
-	const { user, logout } = useAuth();
+	const { data: session } = useSession();
 
 	const isActive = (href: string) => {
+		if (!pathname) return false;
 		if (href === "/admin") {
 			return pathname === "/admin";
 		}
@@ -39,57 +39,55 @@ export function AdminSidebar() {
 						</div>
 					</Link>
 				</div>
-
-				{/* Navigation */}
+				{/* Sidebar links */}
 				<nav className="flex-1 p-4 space-y-2">
 					{sidebarLinks.map((link) => {
 						const active = isActive(link.href);
+						const Icon = link.icon;
 						return (
-							<Link key={link.href} href={link.href}>
-								<motion.div
-									whileHover={{ x: 4 }}
-									className={cn(
-										"flex items-center gap-3 px-4 py-3 rounded-xl transition-colors",
-										active
-											? "bg-violet-500/10 text-violet-400 border border-violet-500/20"
-											: "text-white/60 hover:text-white hover:bg-white/5",
-									)}
-								>
-									<link.icon className="w-5 h-5" />
-									<span className="font-medium">{link.label}</span>
-									{active && <ChevronRight className="w-4 h-4 ml-auto" />}
-								</motion.div>
+							<Link
+								key={link.href}
+								href={link.href}
+								className={cn(
+									"flex items-center gap-3 px-4 py-2 rounded-lg transition-colors",
+									active
+										? "bg-violet-500/20 text-violet-400"
+										: "text-white/80 hover:bg-white/5 hover:text-white",
+								)}
+							>
+								<Icon className="w-5 h-5" />
+								<span>{link.label}</span>
+								{active && <ChevronRight className="w-4 h-4 ml-auto text-violet-400" />}
 							</Link>
 						);
 					})}
 				</nav>
-
-				{/* Footer */}
-				<div className="p-4 border-t border-white/10 space-y-3">
-					{/* View Site */}
-					<Link href="/">
-						<motion.div
-							whileHover={{ x: 4 }}
-							className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:text-white hover:bg-white/5 transition-colors"
-						>
-							<Home className="w-5 h-5" />
-							<span className="font-medium">View Site</span>
-						</motion.div>
-					</Link>
-
-					{/* User info & Logout */}
-					<div className="flex items-center justify-between px-4 py-3 rounded-xl bg-white/5">
-						<div>
-							<p className="text-sm text-white font-medium">{user?.username || "Admin"}</p>
-							<p className="text-xs text-white/50">Administrator</p>
+				{/* User info and logout */}
+				<div className="p-6 border-t border-white/10 mt-auto">
+					{session?.user && (
+						<div className="flex items-center gap-3">
+							<div className="w-9 h-9 rounded-full bg-violet-500/30 flex items-center justify-center">
+								<Home className="w-5 h-5 text-violet-400" />
+							</div>
+							<div className="flex-1">
+								<p className="text-white text-sm font-medium">
+									{session.user.name ||
+										(typeof session.user === "object" && "username" in session.user
+											? (session.user as { username?: string }).username
+											: undefined) ||
+										"Admin"}
+								</p>
+								<p className="text-xs text-white/50">Admin</p>
+							</div>
+							<button
+								onClick={() => signOut()}
+								className="ml-auto p-2 rounded-lg hover:bg-white/10 transition-colors"
+								title="Logout"
+							>
+								<LogOut className="w-5 h-5 text-red-400" />
+							</button>
 						</div>
-						<button
-							onClick={() => logout()}
-							className="p-2 rounded-lg text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-						>
-							<LogOut className="w-4 h-4" />
-						</button>
-					</div>
+					)}
 				</div>
 			</div>
 		</aside>

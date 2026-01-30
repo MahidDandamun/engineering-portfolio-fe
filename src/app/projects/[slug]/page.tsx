@@ -1,18 +1,19 @@
 "use client";
 
 import { use } from "react";
-import Image from "next/image";
+import { Skeleton, ErrorBoundary, Button } from "@/components/ui";
+import { normalizeImageUrl, cn } from "@/lib/utils";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { ArrowLeft, Github, ExternalLink, Calendar, Tag } from "lucide-react";
+import { ProjectHeader } from "@/components/projects/detail/ProjectHeader";
+import { ProjectThumbnail } from "@/components/projects/detail/ProjectThumbnail";
+import { ProjectContent } from "@/components/projects/detail/ProjectContent";
+import { ProjectSidebar } from "@/components/projects/detail/ProjectSidebar";
+import { ProjectGallery } from "@/components/projects/detail/ProjectGallery";
 import { PageWrapper, Section } from "@/components/layout";
-import { Button, Badge, Skeleton, ErrorBoundary } from "@/components/ui";
-import { useProject } from "@/hooks";
 import { useTheme } from "@/context";
-import { categoryLabels, categoryColors, difficultyLabels, difficultyColors } from "@/types";
-import { formatDate, cn, normalizeImageUrl } from "@/lib/utils";
+import { useProject } from "@/hooks";
 
 interface ProjectPageProps {
 	params: Promise<{ slug: string }>;
@@ -24,9 +25,8 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 	const { data, isLoading, error } = useProject(slug);
 	const project = data?.data;
 	const safeThumbnail = normalizeImageUrl(project?.thumbnail);
-	const safeGallery = project?.images?.map((image) => normalizeImageUrl(image)).filter(Boolean) as
-		| string[]
-		| undefined;
+	const safeGallery = (project?.images?.map((image: string) => normalizeImageUrl(image)).filter(Boolean) ??
+		[]) as string[];
 
 	if (isLoading) {
 		return (
@@ -96,96 +96,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 									Back to Projects
 								</Link>
 							</motion.div>
-
-							{/* Header */}
-							<motion.div
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.1 }}
-								className="space-y-6"
-							>
-								{/* Badges */}
-								<div className="flex flex-wrap items-center gap-3">
-									<Badge variant="gradient">{categoryLabels[project.category]}</Badge>
-									<Badge className={difficultyColors[project.difficulty]}>
-										{difficultyLabels[project.difficulty]}
-									</Badge>
-									{project.featured && (
-										<Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
-											⭐ Featured
-										</Badge>
-									)}
-								</div>
-
-								{/* Title */}
-								<h1
-									className={cn(
-										"text-4xl sm:text-5xl lg:text-6xl font-bold",
-										isGhibli ? "text-slate-900" : "text-white",
-									)}
-								>
-									{project.title}
-								</h1>
-
-								{/* Summary */}
-								<p
-									className={cn(
-										"text-xl leading-relaxed",
-										isGhibli ? "text-slate-700" : "text-white/60",
-									)}
-								>
-									{project.summary}
-								</p>
-
-								{/* Meta */}
-								<div
-									className={cn(
-										"flex flex-wrap items-center gap-6",
-										isGhibli ? "text-slate-600" : "text-white/50",
-									)}
-								>
-									<div className="flex items-center gap-2">
-										<Calendar className="w-4 h-4" />
-										<span>{formatDate(project.createdAt)}</span>
-									</div>
-									<div className="flex items-center gap-2">
-										<Tag className="w-4 h-4" />
-										<span>{project.techStack.length} Technologies</span>
-									</div>
-								</div>
-
-								{/* Links */}
-								<div className="flex flex-wrap gap-4 pt-4">
-									{project.githubUrl && (
-										<motion.a
-											href={project.githubUrl}
-											target="_blank"
-											rel="noopener noreferrer"
-											whileHover={{ scale: 1.05 }}
-											whileTap={{ scale: 0.95 }}
-										>
-											<Button variant="secondary">
-												<Github className="w-5 h-5 mr-2" />
-												View Source
-											</Button>
-										</motion.a>
-									)}
-									{project.liveUrl && (
-										<motion.a
-											href={project.liveUrl}
-											target="_blank"
-											rel="noopener noreferrer"
-											whileHover={{ scale: 1.05 }}
-											whileTap={{ scale: 0.95 }}
-										>
-											<Button>
-												<ExternalLink className="w-5 h-5 mr-2" />
-												Live Demo
-											</Button>
-										</motion.a>
-									)}
-								</div>
-							</motion.div>
+							<ProjectHeader project={project} isGhibli={isGhibli} />
 						</div>
 					</Section>
 
@@ -193,30 +104,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 					{safeThumbnail && (
 						<Section className="py-8">
 							<div className="max-w-5xl mx-auto">
-								<motion.div
-									initial={{ opacity: 0, y: 30 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.2 }}
-									className="relative aspect-video rounded-2xl overflow-hidden border border-white/10"
-									style={{ willChange: "transform" }}
-								>
-									<Image
-										src={safeThumbnail}
-										alt={project.title}
-										fill
-										sizes="(max-width: 1024px) 100vw, 80vw"
-										unoptimized={safeThumbnail.startsWith("http")}
-										className="object-cover"
-										priority
-										loading="eager"
-									/>
-									<div
-										className={cn(
-											"absolute inset-0 bg-linear-to-br opacity-20",
-											categoryColors[project.category],
-										)}
-									/>
-								</motion.div>
+								<ProjectThumbnail src={safeThumbnail} alt={project.title} category={project.category} />
 							</div>
 						</Section>
 					)}
@@ -226,141 +114,15 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 						<div className="max-w-4xl mx-auto">
 							<div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
 								{/* Main Content */}
-								<motion.div
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.3 }}
-									className="lg:col-span-3"
-								>
-									<div className="prose-custom">
-										<ReactMarkdown remarkPlugins={[remarkGfm]}>{project.description}</ReactMarkdown>
-									</div>
-								</motion.div>
-
+								<ProjectContent description={project.description} />
 								{/* Sidebar */}
-								<motion.div
-									initial={{ opacity: 0, x: 20 }}
-									animate={{ opacity: 1, x: 0 }}
-									transition={{ delay: 0.4 }}
-									className="space-y-6"
-								>
-									{/* Tech Stack */}
-									<div
-										className={cn(
-											"p-6 rounded-2xl border",
-											isGhibli ? "bg-white/60 border-slate-200/50" : "bg-white/5 border-white/10",
-										)}
-									>
-										<h3
-											className={cn(
-												"text-lg font-semibold mb-4",
-												isGhibli ? "text-slate-900" : "text-white",
-											)}
-										>
-											Tech Stack
-										</h3>
-										<div className="flex flex-wrap gap-2">
-											{project.techStack.map((tech) => (
-												<span
-													key={tech}
-													className={cn(
-														"px-3 py-1.5 text-sm rounded-lg border",
-														isGhibli
-															? "bg-slate-100 text-slate-700 border-slate-200"
-															: "bg-white/5 text-white/70 border-white/10",
-													)}
-												>
-													{tech}
-												</span>
-											))}
-										</div>
-									</div>
-
-									{/* Project Info */}
-									<div
-										className={cn(
-											"p-6 rounded-2xl border",
-											isGhibli ? "bg-white/60 border-slate-200/50" : "bg-white/5 border-white/10",
-										)}
-									>
-										<h3
-											className={cn(
-												"text-lg font-semibold mb-4",
-												isGhibli ? "text-slate-900" : "text-white",
-											)}
-										>
-											Project Info
-										</h3>
-										<dl className="space-y-3 text-sm">
-											<div className="flex justify-between">
-												<dt className={isGhibli ? "text-slate-600" : "text-white/50"}>
-													Category
-												</dt>
-												<dd className={isGhibli ? "text-slate-900" : "text-white"}>
-													{categoryLabels[project.category]}
-												</dd>
-											</div>
-											<div className="flex justify-between">
-												<dt className={isGhibli ? "text-slate-600" : "text-white/50"}>
-													Difficulty
-												</dt>
-												<dd className={isGhibli ? "text-slate-900" : "text-white"}>
-													{difficultyLabels[project.difficulty]}
-												</dd>
-											</div>
-											<div className="flex justify-between">
-												<dt className={isGhibli ? "text-slate-600" : "text-white/50"}>
-													Created
-												</dt>
-												<dd className={isGhibli ? "text-slate-900" : "text-white"}>
-													{formatDate(project.createdAt)}
-												</dd>
-											</div>
-										</dl>
-									</div>
-								</motion.div>
+								<ProjectSidebar project={project} isGhibli={isGhibli} />
 							</div>
 						</div>
 					</Section>
 
 					{/* Image Gallery */}
-					{safeGallery && safeGallery.length > 0 && (
-						<Section className="py-12">
-							<div className="max-w-5xl mx-auto">
-								<h3
-									className={cn(
-										"text-2xl font-bold mb-8",
-										isGhibli ? "text-slate-900" : "text-white",
-									)}
-								>
-									Gallery
-								</h3>
-								<div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-									{safeGallery.map((image, index) => (
-										<motion.div
-											key={index}
-											initial={{ opacity: 0, scale: 0.95 }}
-											whileInView={{ opacity: 1, scale: 1 }}
-											viewport={{ once: true, margin: "-50px" }}
-											transition={{ delay: index * 0.1 }}
-											className="relative aspect-video rounded-xl overflow-hidden border border-white/10"
-											style={{ willChange: "transform" }}
-										>
-											<Image
-												src={image}
-												alt={`${project.title} screenshot ${index + 1}`}
-												fill
-												sizes="(max-width: 1024px) 100vw, 50vw"
-												unoptimized={image.startsWith("http")}
-												className="object-cover"
-												loading="lazy"
-											/>
-										</motion.div>
-									))}
-								</div>
-							</div>
-						</Section>
-					)}
+					<ProjectGallery images={safeGallery} title={project.title} isGhibli={isGhibli} />
 				</article>
 			</PageWrapper>
 		</ErrorBoundary>

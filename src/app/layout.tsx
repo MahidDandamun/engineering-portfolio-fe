@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { QueryProvider, AuthProvider, ThemeProvider } from "@/context";
-import { Navbar, Footer } from "@/components/layout";
-import { ThemeBackground, Toaster, GhibliBackground } from "@/components/ui";
+import ClientRoot from "./ClientRoot";
+import SessionProvider from "@/context/SessionProvider";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,25 +44,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
 			<body className={`${inter.className} antialiased min-h-screen`}>
-				<ThemeProvider>
-					<QueryProvider>
-						<AuthProvider>
-							{/* Animated Background */}
-							<ThemeBackground />
-							<GhibliBackground />
-
-							{/* Toast Notifications */}
-							<Toaster />
-
-							{/* Content */}
-							<div className="relative z-10 flex flex-col min-h-screen">
-								<Navbar />
-								<main className="flex-1">{children}</main>
-								<Footer />
-							</div>
-						</AuthProvider>
-					</QueryProvider>
-				</ThemeProvider>
+				<SessionProvider>
+					<ClientRoot>{children}</ClientRoot>
+				</SessionProvider>
 			</body>
 		</html>
 	);

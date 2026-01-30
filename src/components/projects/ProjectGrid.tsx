@@ -54,8 +54,8 @@ export function ProjectGrid({ projects, isLoading, emptyMessage = "No projects f
 			animate="visible"
 			className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8"
 		>
-			{projects.map((project, index) => (
-				<ProjectCard key={project._id} project={project} index={index} />
+			{projects.map((project) => (
+				<ProjectCard key={project._id} project={project} />
 			))}
 		</motion.div>
 	);

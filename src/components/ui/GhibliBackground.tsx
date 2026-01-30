@@ -4,30 +4,8 @@ import { useTheme } from "@/context";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const SootSprite = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
-	<svg viewBox="0 0 100 100" className={className} style={style}>
-		<defs>
-			<filter id="fuzzy">
-				<feTurbulence
-					type="fractalNoise"
-					baseFrequency="0.8"
-					numOctaves="3"
-					stitchTiles="stitch"
-					result="noise"
-				/>
-				<feDisplacementMap in="SourceGraphic" in2="noise" scale="6" />
-			</filter>
-		</defs>
-		<circle cx="50" cy="50" r="35" fill="black" filter="url(#fuzzy)" />
-		{/* Eyes */}
-		<g className="eyes">
-			<circle cx="35" cy="45" r="8" fill="white" />
-			<circle cx="35" cy="45" r="3" fill="black" />
-			<circle cx="65" cy="45" r="8" fill="white" />
-			<circle cx="65" cy="45" r="3" fill="black" />
-		</g>
-	</svg>
-);
+import SootSprite from "./SootSprite";
+import FloatingOrb from "./FloatingOrb";
 
 export function GhibliBackground() {
 	const { isGhibli } = useTheme();
@@ -58,52 +36,27 @@ export function GhibliBackground() {
 			/>
 
 			{/* Floating Soot Sprites */}
+
 			<motion.div
 				className="absolute top-[20%] left-[10%] w-12 h-12 md:w-16 md:h-16 z-10"
-				animate={{
-					x: mousePosition.x * 0.02,
-					y: mousePosition.y * 0.02,
-					rotate: [0, 5, -5, 0],
-				}}
+				animate={{ x: mousePosition.x * 0.02, y: mousePosition.y * 0.02, rotate: [0, 5, -5, 0] }}
 				transition={{
-					rotate: {
-						duration: 2,
-						repeat: Infinity,
-						ease: "easeInOut",
-					},
-					default: {
-						type: "spring",
-						damping: 20,
-						stiffness: 100,
-					},
+					rotate: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+					default: { type: "spring", damping: 20, stiffness: 100 },
 				}}
 			>
 				<SootSprite />
 			</motion.div>
-
 			<motion.div
 				className="absolute bottom-[20%] right-[15%] w-10 h-10 md:w-14 md:h-14 z-10"
-				animate={{
-					x: mousePosition.x * -0.03,
-					y: mousePosition.y * -0.03,
-					rotate: [0, -10, 10, 0],
-				}}
+				animate={{ x: mousePosition.x * -0.03, y: mousePosition.y * -0.03, rotate: [0, -10, 10, 0] }}
 				transition={{
-					rotate: {
-						duration: 3,
-						repeat: Infinity,
-						ease: "easeInOut",
-					},
-					default: {
-						type: "spring",
-						damping: 15,
-						stiffness: 80,
-					},
+					rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+					default: { type: "spring", damping: 15, stiffness: 80 },
 				}}
 			>
 				<SootSprite />
 			</motion.div>
-
 			<motion.div
 				className="absolute top-[60%] left-[60%] w-8 h-8 md:w-12 md:h-12 opacity-80 z-10"
 				animate={{
@@ -111,67 +64,31 @@ export function GhibliBackground() {
 					y: [mousePosition.y * 0.015, mousePosition.y * 0.015 - 20, mousePosition.y * 0.015],
 				}}
 				transition={{
-					y: {
-						duration: 4,
-						repeat: Infinity,
-						ease: "easeInOut",
-					},
-					default: {
-						type: "spring",
-						damping: 25,
-					},
+					y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+					default: { type: "spring", damping: 25 },
 				}}
 			>
 				<SootSprite />
 			</motion.div>
 
 			{/* Floating colored orbs (Spirited Away Palette) */}
-			<motion.div
+			<FloatingOrb
 				className="absolute top-20 -left-32 w-64 h-32 rounded-full opacity-20"
-				style={{
-					background: "radial-gradient(circle, var(--ghibli-sage) 0%, transparent 70%)",
-				}}
-				animate={{
-					x: [0, 50, 0],
-					y: [0, -20, 0],
-				}}
-				transition={{
-					duration: 15,
-					repeat: Infinity,
-					ease: "easeInOut",
-				}}
+				style={{ background: "radial-gradient(circle, var(--ghibli-sage) 0%, transparent 70%)" }}
+				animate={{ x: [0, 50, 0], y: [0, -20, 0] }}
+				transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
 			/>
-
-			<motion.div
+			<FloatingOrb
 				className="absolute top-1/3 -right-40 w-80 h-40 rounded-full opacity-20"
-				style={{
-					background: "radial-gradient(circle, var(--ghibli-pink) 0%, transparent 70%)",
-				}}
-				animate={{
-					x: [0, -40, 0],
-					y: [0, 30, 0],
-				}}
-				transition={{
-					duration: 20,
-					repeat: Infinity,
-					ease: "easeInOut",
-				}}
+				style={{ background: "radial-gradient(circle, var(--ghibli-pink) 0%, transparent 70%)" }}
+				animate={{ x: [0, -40, 0], y: [0, 30, 0] }}
+				transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
 			/>
-
-			<motion.div
+			<FloatingOrb
 				className="absolute bottom-1/4 -left-24 w-56 h-28 rounded-full opacity-20"
-				style={{
-					background: "radial-gradient(circle, var(--ghibli-teal) 0%, transparent 70%)",
-				}}
-				animate={{
-					x: [0, 60, 0],
-					y: [0, -15, 0],
-				}}
-				transition={{
-					duration: 18,
-					repeat: Infinity,
-					ease: "easeInOut",
-				}}
+				style={{ background: "radial-gradient(circle, var(--ghibli-teal) 0%, transparent 70%)" }}
+				animate={{ x: [0, 60, 0], y: [0, -15, 0] }}
+				transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
 			/>
 
 			{/* Subtle grain texture */}

@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Mail, MapPin, Briefcase } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui";
 import { useTheme } from "@/context";
 import { cn } from "@/lib/utils";
+import { CONTACT_BADGES, CONTACT_BADGE } from "./contactData";
 
 export function ContactCTA() {
 	const { isGhibli } = useTheme();
@@ -52,12 +53,28 @@ export function ContactCTA() {
 						viewport={{ once: true }}
 						className={cn(
 							"inline-flex items-center gap-2 px-4 py-2 rounded-full border",
-							isGhibli ? "bg-amber-100 border-amber-200" : "bg-violet-500/10 border-violet-500/20",
+							isGhibli
+								? CONTACT_BADGE.colorLight.split(" ").slice(0, 2).join(" ")
+								: CONTACT_BADGE.colorDark.split(" ").slice(0, 2).join(" "),
 						)}
 					>
-						<Briefcase className={cn("w-4 h-4", isGhibli ? "text-amber-600" : "text-violet-400")} />
-						<span className={cn("text-sm", isGhibli ? "text-amber-700" : "text-violet-400")}>
-							Open for opportunities
+						<CONTACT_BADGE.icon
+							className={cn(
+								"w-4 h-4",
+								isGhibli
+									? CONTACT_BADGE.colorLight.split(" ")[4]
+									: CONTACT_BADGE.colorDark.split(" ")[4],
+							)}
+						/>
+						<span
+							className={cn(
+								"text-sm",
+								isGhibli
+									? CONTACT_BADGE.colorLight.split(" ")[2]
+									: CONTACT_BADGE.colorDark.split(" ")[2],
+							)}
+						>
+							{CONTACT_BADGE.label}
 						</span>
 					</motion.div>
 
@@ -89,28 +106,22 @@ export function ContactCTA() {
 
 					{/* Info badges */}
 					<div className="flex flex-wrap justify-center gap-4">
-						<div
-							className={cn(
-								"flex items-center gap-2 px-4 py-2 rounded-xl border",
-								isGhibli ? "bg-white/70 border-slate-200" : "bg-white/5 border-white/10",
-							)}
-						>
-							<MapPin className={cn("w-4 h-4", isGhibli ? "text-slate-500" : "text-white/50")} />
-							<span className={cn("text-sm", isGhibli ? "text-slate-600" : "text-white/70")}>
-								Remote / Worldwide
-							</span>
-						</div>
-						<div
-							className={cn(
-								"flex items-center gap-2 px-4 py-2 rounded-xl border",
-								isGhibli ? "bg-white/70 border-slate-200" : "bg-white/5 border-white/10",
-							)}
-						>
-							<Mail className={cn("w-4 h-4", isGhibli ? "text-slate-500" : "text-white/50")} />
-							<span className={cn("text-sm", isGhibli ? "text-slate-600" : "text-white/70")}>
-								Quick Response
-							</span>
-						</div>
+						{CONTACT_BADGES.map((badge) => {
+							const color = isGhibli ? badge.colorLight : badge.colorDark;
+							const iconColor = isGhibli ? badge.iconColorLight : badge.iconColorDark;
+							return (
+								<div
+									key={badge.label}
+									className={cn(
+										"flex items-center gap-2 px-4 py-2 rounded-xl border",
+										color.split(" ").slice(0, 2).join(" "),
+									)}
+								>
+									<badge.icon className={cn("w-4 h-4", iconColor)} />
+									<span className={cn("text-sm", color.split(" ")[2])}>{badge.label}</span>
+								</div>
+							);
+						})}
 					</div>
 
 					{/* CTA Button */}
@@ -123,9 +134,8 @@ export function ContactCTA() {
 					>
 						<Link href="/contact">
 							<Button size="lg" className="group min-w-50">
-								<Mail className="w-5 h-5 mr-2" />
-								Get in Touch
 								<ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+								Get in Touch
 							</Button>
 						</Link>
 					</motion.div>

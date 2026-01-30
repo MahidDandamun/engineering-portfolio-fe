@@ -2,23 +2,23 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context";
+import { useSession } from "next-auth/react";
 
 interface ProtectedRouteProps {
 	children: React.ReactNode;
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-	const { isAuthenticated, isLoading } = useAuth();
+	const { status } = useSession();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!isLoading && !isAuthenticated) {
+		if (status === "unauthenticated") {
 			router.push("/admin/login");
 		}
-	}, [isAuthenticated, isLoading, router]);
+	}, [status, router]);
 
-	if (isLoading) {
+	if (status === "loading") {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
@@ -26,7 +26,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 		);
 	}
 
-	if (!isAuthenticated) {
+	if (status === "unauthenticated") {
 		return null;
 	}
 

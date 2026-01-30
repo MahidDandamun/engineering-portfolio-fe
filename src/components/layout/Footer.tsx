@@ -2,40 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react";
+import { Heart, ArrowUp } from "lucide-react";
+import { FOOTER_LINKS, FOOTER_SOCIAL_LINKS } from "./footerData";
 import { useTheme } from "@/context";
 import { cn } from "@/lib/utils";
 
-const footerLinks = [
-	{
-		title: "Navigation",
-		links: [
-			{ href: "/", label: "Home" },
-			{ href: "/projects", label: "Projects" },
-			{ href: "/certificates", label: "Certificates" },
-			{ href: "/contact", label: "Contact" },
-		],
-	},
-	{
-		title: "Categories",
-		links: [
-			{ href: "/projects?category=web", label: "Web Development" },
-			{ href: "/projects?category=embedded", label: "Embedded Systems" },
-			{ href: "/projects?category=software", label: "Software Engineering" },
-			{ href: "/projects?category=3d", label: "3D Design" },
-		],
-	},
-];
-
-const socialLinks = [
-	{ href: "https://github.com/yourusername", icon: Github, label: "GitHub" },
-	{
-		href: "https://linkedin.com/in/yourusername",
-		icon: Linkedin,
-		label: "LinkedIn",
-	},
-	{ href: "mailto:your@email.com", icon: Mail, label: "Email" },
-];
+// footerLinks and socialLinks now imported from footerData.ts
 
 export function Footer() {
 	const { isGhibli } = useTheme();
@@ -93,7 +65,7 @@ export function Footer() {
 
 						{/* Social Links */}
 						<div className="flex items-center gap-3">
-							{socialLinks.map((link) => (
+							{FOOTER_SOCIAL_LINKS.map((link) => (
 								<motion.a
 									key={link.label}
 									href={link.href}
@@ -115,7 +87,7 @@ export function Footer() {
 					</div>
 
 					{/* Links Sections */}
-					{footerLinks.map((section) => (
+					{FOOTER_LINKS.map((section) => (
 						<div key={section.title}>
 							<h4 className={cn("font-semibold mb-4", isGhibli ? "text-[#2d3436]" : "text-white")}>
 								{section.title}

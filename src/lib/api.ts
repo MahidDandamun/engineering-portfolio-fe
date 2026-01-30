@@ -32,7 +32,11 @@ export async function api<T>(endpoint: string, options: RequestInit = {}): Promi
 
 		if (!res.ok) {
 			const errorData = await res.json().catch(() => null);
-			console.error("API Error: Response", errorData);
+			if (errorData && Object.keys(errorData).length > 0) {
+				console.error("API Error: Response", errorData);
+			} else {
+				console.error("API Error: No error details from server");
+			}
 			throw new ApiError(errorData?.message || "Request failed", res.status, errorData);
 		}
 

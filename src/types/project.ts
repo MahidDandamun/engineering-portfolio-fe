@@ -1,3 +1,22 @@
+import { z } from "zod";
+
+export const CATEGORIES = ["web", "embedded", "software", "3d"] as const;
+export const DIFFICULTIES = ["easy", "intermediate", "hard", "professional"] as const;
+
+export const projectSchema = z.object({
+	title: z.string().min(3, "Title must be at least 3 characters"),
+	slug: z.string().min(3, "Slug must be at least 3 characters"),
+	summary: z.string().min(10, "Summary must be at least 10 characters"),
+	description: z.string().min(50, "Description must be at least 50 characters"),
+	category: z.enum(CATEGORIES),
+	difficulty: z.enum(DIFFICULTIES),
+	githubUrl: z.string().url().optional().or(z.literal("")),
+	liveUrl: z.string().url().optional().or(z.literal("")),
+	thumbnail: z.string().url().optional().or(z.literal("")),
+	featured: z.boolean(),
+});
+
+export type ProjectFormData = z.infer<typeof projectSchema>;
 // Project Types
 export interface Project {
 	_id: string;
@@ -16,9 +35,6 @@ export interface Project {
 	createdAt: string;
 	updatedAt: string;
 }
-
-export const CATEGORIES = ["web", "embedded", "software", "3d"] as const;
-export const DIFFICULTIES = ["easy", "intermediate", "hard", "professional"] as const;
 
 export type ProjectCategory = (typeof CATEGORIES)[number];
 export type ProjectDifficulty = (typeof DIFFICULTIES)[number];
