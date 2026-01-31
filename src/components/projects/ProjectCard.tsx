@@ -1,6 +1,7 @@
 "use client";
 
 import { ProjectMeta } from "./ProjectMeta";
+import { Badge } from "@/components/ui";
 import { ProjectActions } from "./ProjectActions";
 import { ArrowRight } from "lucide-react";
 import { ProjectThumbnail } from "./ProjectThumbnail";
@@ -94,6 +95,18 @@ export function ProjectCard({ project }: ProjectCardProps) {
 						categoryColor={categoryColors[project.category] || ""}
 						difficultyColor={difficultyColors[project.difficulty] || ""}
 					/>
+					{project.featured && (
+						<Badge
+							className={cn(
+								"px-2 py-1 text-xs font-semibold",
+								isGhibli
+									? "bg-[#f7f0e3] text-[#6e3f28] border-[#d64550]/25"
+									: "bg-white/5 text-white/70 border-[#8b5cf6]/20",
+							)}
+						>
+							⭐ Featured
+						</Badge>
+					)}
 					<h3
 						className={cn(
 							"text-xl font-bold transition-colors line-clamp-2",

@@ -25,7 +25,7 @@ See `FRONTEND_CONTEXT.md` and `docs/frontend_context.md` for a complete design a
 - React Hook Form + Zod for validation
 - Sonner for theme-aware toast notifications
 - Per-page Error Boundaries for robust error handling
-- Playwright E2E tests and Vitest unit tests
+- Vitest unit tests
 
 ## Tech Stack
 
@@ -38,6 +38,7 @@ See `FRONTEND_CONTEXT.md` and `docs/frontend_context.md` for a complete design a
 - framer-motion
 - sonner (toasts)
 - @playwright/test (E2E)
+- vitest (unit tests)
 - vitest (unit tests)
 
 ## Getting Started
@@ -78,23 +79,16 @@ npm run dev
 - `npm run test` — Run unit tests (Vitest)
 - `npm run test:run` — Run unit tests once
 - `npm run test:coverage` — Run tests with coverage
-- `npm run test:e2e` — Run Playwright E2E tests
-- `npm run test:e2e:ui` — Run Playwright in UI mode
+- `npm run test:coverage` — Run tests with coverage
 
 ## Testing
 
-Unit tests use Vitest and React Testing Library. E2E tests use Playwright and include representative user flows (navigation, filtering, contact form, admin redirect behavior).
+Unit tests use Vitest and React Testing Library.
 
 Run unit tests:
 
 ```bash
 npm run test
-```
-
-Run E2E tests (dev server must be running or Playwright will start it automatically):
-
-```bash
-npm run test:e2e
 ```
 
 ## Development Notes
@@ -123,8 +117,7 @@ src/
 	types/
 docs/
 FRONTEND_CONTEXT.md
-playwright.config.ts
-e2e/
+<!-- Playwright/e2e removed during refactor -->
 ```
 
 ## Contributing

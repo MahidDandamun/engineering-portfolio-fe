@@ -30,22 +30,4 @@ const createWrapper = () => {
 };
 
 describe("useCertificates", () => {
-	beforeEach(() => {
-		vi.clearAllMocks();
-	});
-
-	it("fetches certificates successfully", async () => {
-		vi.mocked(certificatesApi.getAll).mockResolvedValue({
-			success: true,
-			data: [{ _id: "1", title: "AWS Solutions Architect" }],
-		});
-
-		const { result } = renderHook(() => useCertificates(), {
-			wrapper: createWrapper(),
-		});
-
-		await waitFor(() => expect(result.current.isSuccess).toBe(true));
-		expect(result.current.data?.data).toHaveLength(1);
-		expect(certificatesApi.getAll).toHaveBeenCalled();
-	});
-});
+	// DELETED: Duplicate test moved to src/__tests__/hooks/useCertificates.test.tsx

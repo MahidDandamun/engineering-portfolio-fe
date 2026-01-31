@@ -1,4 +1,4 @@
 import "@testing-library/jest-dom";
 import { configure } from "@testing-library/react";
 
-configure({ testIdAttribute: "data-testid" });
+// DELETED: replaced by src/__tests__/setup.tsx
