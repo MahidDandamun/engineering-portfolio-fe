@@ -1,24 +1,39 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 
 interface ProtectedRouteProps {
 	children: React.ReactNode;
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-	const { status } = useSession();
+	const { user, loading, refresh } = useAuth();
 	const router = useRouter();
+	const [triedRefresh, setTriedRefresh] = useState(false);
 
 	useEffect(() => {
-		if (status === "unauthenticated") {
+		console.log("ProtectedRoute: loading, user", loading, user, "triedRefresh", triedRefresh);
+		if (!loading && !user && !triedRefresh) {
+			// Attempt one refresh before redirecting to handle missing state after page reload
+			(async () => {
+				setTriedRefresh(true);
+				try {
+					await refresh();
+				} catch {
+					/* ignore */
+				}
+			})();
+			return;
+		}
+
+		if (!loading && !user && triedRefresh) {
 			router.push("/admin/login");
 		}
-	}, [status, router]);
+	}, [loading, user, router, refresh, triedRefresh]);
 
-	if (status === "loading") {
+	if (loading) {
 		return (
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
@@ -26,9 +41,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 		);
 	}
 
-	if (status === "unauthenticated") {
-		return null;
-	}
+	if (!user) return null;
 
 	return <>{children}</>;
 }

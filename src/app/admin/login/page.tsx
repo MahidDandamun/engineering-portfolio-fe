@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, User, AlertCircle } from "lucide-react";
 import { Button, Input } from "@/components/ui";
 import { useTheme } from "@/context";
-import { signIn } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { loginSchema, LoginFormData } from "@/lib/schemas/loginSchema";
 
 export default function LoginPage() {
@@ -25,20 +25,31 @@ export default function LoginPage() {
 		resolver: zodResolver(loginSchema),
 	});
 
+	const { login, refresh } = useAuth();
+
 	const onSubmit = async (data: LoginFormData) => {
 		setIsLoading(true);
 		setError("");
-		const res = await signIn("credentials", {
-			redirect: false,
-			username: data.username,
-			password: data.password,
-		});
-		if (res?.ok) {
-			router.push("/admin");
-		} else {
-			setError("Invalid username or password");
+		try {
+			const res = await login({ username: data.username, password: data.password });
+			const ok = res?.data?.user ?? res?.user ?? res?.success;
+			if (ok) {
+				// Ensure auth state is refreshed before navigating
+				try {
+					await refresh();
+				} catch {
+					// ignore, we'll still navigate if login indicated success
+				}
+				router.push("/admin");
+			} else {
+				setError("Invalid username or password");
+			}
+		} catch (err: unknown) {
+			const msg = err instanceof Error ? err.message : String(err ?? "Invalid username or password");
+			setError(msg);
+		} finally {
+			setIsLoading(false);
 		}
-		setIsLoading(false);
 	};
 
 	return (

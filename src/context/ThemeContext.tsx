@@ -10,6 +10,8 @@ interface ThemeContextType {
 	toggleTheme: () => void;
 	isGhibli: boolean;
 	isJJK: boolean;
+	motionEnabled: boolean;
+	toggleMotion: () => void;
 }
 
 interface ThemeProviderProps {
@@ -31,6 +33,11 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
 		if (defaultTheme) return resolveTheme(defaultTheme);
 		return "dark";
 	});
+	const [motionEnabled, setMotionEnabled] = useState<boolean>(() => {
+		if (typeof window === "undefined") return true;
+		const saved = localStorage.getItem("motionEnabled");
+		return saved === null ? true : saved === "true";
+	});
 
 	useEffect(() => {
 		if (typeof window === "undefined") return;
@@ -50,6 +57,9 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
 		setTimeout(() => setTheme(initialTheme), 0);
 	}, [defaultTheme]);
 
+	// motionEnabled is initialized from localStorage in useState lazy initializer above,
+	// so no need to synchronously set state again in an effect here.
+
 	useEffect(() => {
 		if (typeof window === "undefined") return;
 
@@ -58,15 +68,28 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
 		document.documentElement.classList.add(theme);
 	}, [theme]);
 
+	useEffect(() => {
+		if (typeof window === "undefined") return;
+		localStorage.setItem("motionEnabled", motionEnabled ? "true" : "false");
+	}, [motionEnabled]);
+
 	const toggleTheme = () => {
 		setTheme((prev) => (prev === "light" ? "dark" : "light"));
+	};
+
+	const toggleMotion = () => {
+		setMotionEnabled((v) => !v);
 	};
 
 	// Ghibli style for light mode, JJK for dark mode
 	const isGhibli = theme === "light";
 	const isJJK = theme === "dark";
 
-	return <ThemeContext.Provider value={{ theme, toggleTheme, isGhibli, isJJK }}>{children}</ThemeContext.Provider>;
+	return (
+		<ThemeContext.Provider value={{ theme, toggleTheme, isGhibli, isJJK, motionEnabled, toggleMotion }}>
+			{children}
+		</ThemeContext.Provider>
+	);
 }
 
 export function useTheme() {

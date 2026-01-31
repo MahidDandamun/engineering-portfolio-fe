@@ -32,7 +32,8 @@ export function useCreateCertificate() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (data: CreateCertificateDTO) => certificatesApi.create(data),
+		mutationFn: (data: CreateCertificateDTO & { signal?: AbortSignal }) =>
+			certificatesApi.create(data, data.signal),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: certificateKeys.all });
 			toast.success("Certificate created successfully!");
@@ -47,7 +48,8 @@ export function useUpdateCertificate() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: ({ id, data }: { id: string; data: UpdateCertificateDTO }) => certificatesApi.update(id, data),
+		mutationFn: ({ id, data, signal }: { id: string; data: UpdateCertificateDTO; signal?: AbortSignal }) =>
+			certificatesApi.update(id, data, signal),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: certificateKeys.all });
 			toast.success("Certificate updated successfully!");
@@ -63,7 +65,21 @@ export function useDeleteCertificate() {
 
 	return useMutation({
 		mutationFn: (id: string) => certificatesApi.delete(id),
-		onSuccess: () => {
+		onSuccess: (_data, id) => {
+			queryClient.setQueriesData({ predicate: (query) => query.queryKey?.[0] === "certificates" }, (oldData) => {
+				if (!oldData) return oldData;
+
+				if (Array.isArray(oldData)) {
+					return (oldData as Array<{ _id?: string }>).filter((c) => c._id !== id);
+				}
+
+				const maybe = oldData as { data?: Array<{ _id?: string }> } & Record<string, unknown>;
+				if (maybe.data && Array.isArray(maybe.data)) {
+					return { ...maybe, data: maybe.data.filter((c) => c._id !== id) };
+				}
+
+				return oldData;
+			});
 			queryClient.invalidateQueries({ queryKey: certificateKeys.all });
 			toast.success("Certificate deleted successfully!");
 		},

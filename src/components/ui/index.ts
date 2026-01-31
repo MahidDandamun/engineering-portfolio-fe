@@ -7,6 +7,7 @@ export { Badge } from "./Badge";
 export { Modal } from "./Modal";
 export { Skeleton, ProjectCardSkeleton, CertificateCardSkeleton } from "./Skeleton";
 export { ThemeToggle } from "./ThemeToggle";
+export { MotionToggle } from "./MotionToggle";
 export { ThemeBackground } from "./ThemeBackground";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { Toaster } from "./Toaster";

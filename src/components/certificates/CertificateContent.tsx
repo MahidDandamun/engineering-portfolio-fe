@@ -1,7 +1,6 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { Calendar, ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, normalizeImageUrl } from "@/lib/utils";
 import { useTheme } from "@/context";
 import { formatDateShort } from "@/lib/utils";
 
@@ -10,11 +9,13 @@ export function CertificateContent({
 	issuer,
 	dateIssued,
 	credentialId,
+	imageUrl,
 }: {
 	title: string;
 	issuer: string;
 	dateIssued: string;
 	credentialId?: string;
+	imageUrl?: string;
 }) {
 	const { isGhibli } = useTheme();
 	return (
@@ -40,19 +41,46 @@ export function CertificateContent({
 					<Calendar className="w-4 h-4" />
 					<span>{formatDateShort(dateIssued)}</span>
 				</div>
-				{credentialId && (
-					<motion.button
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						className={cn(
-							"flex items-center gap-1.5 text-sm transition-colors",
-							isGhibli ? "text-red-500 hover:text-red-600" : "text-violet-400 hover:text-violet-300",
-						)}
-					>
-						<span>View</span>
-						<ExternalLink className="w-3.5 h-3.5" />
-					</motion.button>
-				)}
+				{(imageUrl || credentialId) &&
+					(() => {
+						// prefer imageUrl if present, otherwise try credentialId as a URL
+						const raw = imageUrl ?? credentialId ?? "";
+						let href = raw;
+						try {
+							href = normalizeImageUrl(raw) ?? raw;
+						} catch {
+							href = raw;
+						}
+						return (
+							<a
+								href={href}
+								target="_blank"
+								rel="noopener noreferrer"
+								className={cn(
+									"flex items-center gap-1.5 text-sm transition-colors",
+									isGhibli
+										? "text-red-500 hover:text-red-600"
+										: "text-violet-400 hover:text-violet-300",
+								)}
+								onClick={(e) => {
+									// ensure external navigation (avoid client-side routing issues)
+									// normalize protocol and open in new tab if needed
+									try {
+										if (!/^https?:\/\//i.test(href)) {
+											const normalized = `https://${href}`;
+											e.preventDefault();
+											window.open(normalized, "_blank", "noopener,noreferrer");
+										}
+									} catch {
+										// fallback: allow the anchor to behave normally
+									}
+								}}
+							>
+								<span>View</span>
+								<ExternalLink className="w-3.5 h-3.5" />
+							</a>
+						);
+					})()}
 			</div>
 		</div>
 	);

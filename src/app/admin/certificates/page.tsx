@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Search } from "lucide-react";
 import { Button, Input, ErrorBoundary } from "@/components/ui";
 import { useCertificates, useCreateCertificate, useUpdateCertificate, useDeleteCertificate } from "@/hooks";
+import { uploadApi } from "@/lib/upload";
 import { CertificatesGrid } from "@/components/admin/CertificatesGrid";
 import { CertificateFormModal } from "@/components/admin/certificates/CertificateFormModal";
 import { CertificateDeleteModal } from "@/components/admin/certificates/CertificateDeleteModal";
 import { useAdminAuthRedirect } from "@/hooks/useAdminAuthRedirect";
-import { Certificate } from "@/types";
+import { Certificate, CreateCertificateDTO } from "@/types";
 
 import { CertificateFormData, certificateSchema } from "@/lib/schemas/certificateSchema";
 
@@ -19,7 +20,10 @@ export default function AdminCertificatesPage() {
 	useAdminAuthRedirect();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [skipModalExitAnimation, setSkipModalExitAnimation] = useState(false);
 	const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const abortRef = useRef<AbortController | null>(null);
 	const [deleteModal, setDeleteModal] = useState<Certificate | null>(null);
 
 	const { data, isLoading } = useCertificates();
@@ -70,25 +74,66 @@ export default function AdminCertificatesPage() {
 	};
 
 	const onSubmit = async (data: CertificateFormData) => {
-		try {
-			const payload = {
-				...data,
-				credentialId: data.credentialId || undefined,
-				imageUrl: data.imageUrl || undefined,
-			};
+		const currentEditing = editingCertificate;
 
-			if (editingCertificate) {
-				await updateCertificate.mutateAsync({
-					id: editingCertificate._id,
-					data: payload,
-				});
-			} else {
-				await createCertificate.mutateAsync(payload);
+		// Abort any previous in-flight operation and create a new controller for this submit
+		abortRef.current?.abort();
+		const controller = new AbortController();
+		abortRef.current = controller;
+		const signal = controller.signal;
+
+		const payload: CreateCertificateDTO = {
+			title: data.title,
+			issuer: data.issuer,
+			dateIssued: data.dateIssued,
+			credentialId: data.credentialId || undefined,
+			imageUrl: data.imageUrl || undefined,
+		};
+
+		let aborted = false;
+
+		try {
+			if (selectedFile) {
+				try {
+					const res = await uploadApi.uploadCertificateImage(selectedFile, signal);
+					if (res?.success && res.data?.url) {
+						payload.imageUrl = res.data.url;
+					}
+				} catch (err) {
+					if ((err as DOMException)?.name === "AbortError") {
+						// Upload was aborted — mark and skip remaining work
+						aborted = true;
+					} else {
+						// swallow other errors; mutation will handle them
+					}
+				}
 			}
+
+			if (aborted) return;
+
+			if (currentEditing) {
+				await updateCertificate.mutateAsync({ id: currentEditing._id, data: payload, signal });
+			} else {
+				await createCertificate.mutateAsync({ ...(payload as CreateCertificateDTO), signal });
+			}
+
+			// On success: close modal without exit animation for snappy UX
+			setSkipModalExitAnimation(true);
 			closeModal();
-		} catch {
-			// Error is handled by the mutation's onError callback
+			setTimeout(() => setSkipModalExitAnimation(false), 80);
+		} finally {
+			setSelectedFile(null);
+			// clear abort controller after completion
+			abortRef.current = null;
 		}
+	};
+
+	const handleCancel = () => {
+		// abort any in-flight submit/upload and then close modal
+		abortRef.current?.abort();
+		abortRef.current = null;
+		setSelectedFile(null);
+		closeModal();
 	};
 
 	const handleDelete = async () => {
@@ -149,6 +194,10 @@ export default function AdminCertificatesPage() {
 				<CertificateFormModal
 					isOpen={isModalOpen}
 					onClose={closeModal}
+					onCancel={handleCancel}
+					skipExitAnimation={skipModalExitAnimation}
+					selectedFile={selectedFile}
+					onFileSelect={setSelectedFile}
 					onSubmit={onSubmit}
 					form={form}
 					isLoading={createCertificate.isPending || updateCertificate.isPending}

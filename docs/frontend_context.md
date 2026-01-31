@@ -224,8 +224,8 @@ export function ThemedComponent() {
     <div className={cn(
       "rounded-xl p-6",
       isGhibli
-        ? "bg-gradient-to-r from-[#ffeaa7] to-[#fdcb6e] text-[#2d3436]"
-        : "bg-gradient-to-r from-[#8b5cf6] to-[#3b82f6] text-white"
+        ? "bg-linear-to-r from-[#ffeaa7] to-[#fdcb6e] text-[#2d3436]"
+        : "bg-linear-to-r from-[#8b5cf6] to-[#3b82f6] text-white"
     )}>
       Content
     </div>

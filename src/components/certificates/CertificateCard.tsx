@@ -55,6 +55,7 @@ export function CertificateCard({ certificate, index = 0 }: CertificateCardProps
 					issuer={certificate.issuer}
 					dateIssued={certificate.dateIssued}
 					credentialId={certificate.credentialId}
+					imageUrl={safeImageUrl ?? undefined}
 				/>
 
 				{/* Actions (optional, for demonstration) */}

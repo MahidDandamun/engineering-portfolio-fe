@@ -1,5 +1,5 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+import AuthProvider from "./AuthContext";
 
-export default SessionProvider;
+export default AuthProvider;

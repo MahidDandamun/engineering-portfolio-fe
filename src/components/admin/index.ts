@@ -1,2 +1,2 @@
 export { ProtectedRoute } from "./ProtectedRoute";
-export { AdminSidebar } from "./AdminSidebar";
+export { default as AdminSidebar } from "./AdminSidebar";

@@ -10,7 +10,7 @@ export interface UploadResponse {
 }
 
 export const uploadApi = {
-	uploadProjectImage: async (file: File): Promise<UploadResponse> => {
+	uploadProjectImage: async (file: File, signal?: AbortSignal): Promise<UploadResponse> => {
 		const formData = new FormData();
 		formData.append("image", file);
 
@@ -18,12 +18,13 @@ export const uploadApi = {
 			method: "POST",
 			credentials: "include",
 			body: formData, // No Content-Type header for FormData
+			signal,
 		});
 
 		return res.json();
 	},
 
-	uploadCertificateImage: async (file: File): Promise<UploadResponse> => {
+	uploadCertificateImage: async (file: File, signal?: AbortSignal): Promise<UploadResponse> => {
 		const formData = new FormData();
 		formData.append("image", file);
 
@@ -31,6 +32,7 @@ export const uploadApi = {
 			method: "POST",
 			credentials: "include",
 			body: formData,
+			signal,
 		});
 
 		return res.json();

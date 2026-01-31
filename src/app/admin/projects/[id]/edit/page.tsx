@@ -20,6 +20,8 @@ import { useAdminAuthRedirect } from "@/hooks/useAdminAuthRedirect";
 import { slugify } from "@/lib/utils";
 
 import { projectSchema, ProjectFormData } from "@/types/project";
+import { useState } from "react";
+import { uploadApi } from "@/lib/upload";
 
 interface EditProjectPageProps {
 	params: Promise<{ id: string }>;
@@ -59,8 +61,25 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [project, reset]);
 
+	const [selectedThumbnailFile, setSelectedThumbnailFile] = useState<File | null>(null);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
 	const onSubmit = async (data: ProjectFormData) => {
+		setIsSubmitting(true);
 		try {
+			if (selectedThumbnailFile) {
+				try {
+					const res = await uploadApi.uploadProjectImage(selectedThumbnailFile);
+					if (res?.success && res.data?.url) {
+						data.thumbnail = res.data.url;
+					}
+				} catch {
+					// swallow - mutation will handle errors
+				} finally {
+					setSelectedThumbnailFile(null);
+				}
+			}
+
 			await updateProject.mutateAsync({
 				id,
 				data: {
@@ -71,9 +90,16 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
 					thumbnail: data.thumbnail || undefined,
 				},
 			});
-			router.push("/admin/projects");
+			// Navigate without page transition animation for immediate feedback
+			try {
+				sessionStorage.setItem("skipPageTransition", "1");
+			} catch {}
+			// Use client-side navigation for reliability with the App Router
+			router.replace("/admin/projects");
 		} catch {
 			// Error is handled by the mutation's onError callback
+		} finally {
+			setIsSubmitting(false);
 		}
 	};
 
@@ -155,7 +181,7 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
 				<FeaturedSection form={form} />
 
 				{/* Links & Media */}
-				<LinksMediaSection form={form} />
+				<LinksMediaSection form={form} onFileSelect={setSelectedThumbnailFile} />
 
 				{/* Actions */}
 				<div className="flex justify-end gap-4">
@@ -164,7 +190,7 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
 							Cancel
 						</Button>
 					</Link>
-					<Button type="submit" isLoading={updateProject.isPending}>
+					<Button type="submit" isLoading={updateProject.isPending || isSubmitting}>
 						<Save className="w-4 h-4 mr-2" />
 						Save Changes
 					</Button>

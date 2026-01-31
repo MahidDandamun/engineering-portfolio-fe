@@ -71,13 +71,15 @@ export function Navbar() {
 
 							{/* Social Links */}
 							<NavbarSocialLinks />
+						</div>
 
-							{/* Mobile Menu Button */}
+						{/* Mobile Menu Button - visible on mobile only */}
+						<div className="flex lg:hidden items-center">
 							<motion.button
 								whileTap={{ scale: 0.95 }}
 								onClick={() => setIsOpen(!isOpen)}
 								className={cn(
-									"lg:hidden relative z-10 p-2 rounded-lg transition-colors cursor-pointer",
+									"relative z-10 p-2 rounded-lg transition-colors cursor-pointer",
 									isGhibli
 										? "text-[#6e3f28] hover:text-[#0e3b6c] hover:bg-[#6cb65f]/20"
 										: "text-white/80 hover:text-white hover:bg-white/10",

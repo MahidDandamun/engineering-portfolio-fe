@@ -88,6 +88,10 @@ body {
 	position: relative;
 }
 
+/* NOTE: removed aggressive global `text-white` overrides — text color
+   adjustments should be done component-by-component to avoid affecting
+   background or utility classes unintentionally. */
+
 /* Ghibli Background Pattern (Light Mode Only) */
 body:not(.dark)::before {
 	content: "";
@@ -114,6 +118,71 @@ body:not(.dark)::before {
 body > * {
 	position: relative;
 	z-index: 1;
+}
+
+/* Page transition content adjustments */
+/* NOTE: avoid globally removing top padding here — doing so can shift
+	main content for non-admin routes. Admin-specific overrides exist below
+	and will continue to target only admin pages when necessary. */
+
+/* Admin-specific theme-aware adjustments */
+.admin-root {
+	/* Use theme variables provided by ThemeProvider (root .dark toggles) */
+	background: var(--background);
+	color: var(--foreground);
+	min-height: 100vh;
+}
+
+/* page-transition-content wraps admin-root in the current layout; target that shape */
+.page-transition-content > .admin-root {
+	background: var(--background);
+	color: var(--foreground);
+	min-height: 100vh;
+}
+
+.page-transition-content > .admin-root .admin-main {
+	background: transparent;
+}
+
+/* Add top padding for admin routes so main content sits below the fixed Navbar */
+.admin-root .admin-main {
+	padding-top: 5rem; /* ~80px to clear header */
+}
+
+/* Scope text color mappings to admin routes only so non-admin pages remain unchanged */
+.admin-root .text-white {
+	color: var(--foreground) !important;
+}
+.admin-root [class*="text-white/"] {
+	color: var(--foreground-secondary) !important;
+}
+.admin-root ::placeholder {
+	color: var(--foreground-secondary) !important;
+	opacity: 1;
+}
+
+/* Ensure large top padding utilities inside admin routes are neutralized
+   when admin-root is the child of the page-transition wrapper. */
+.page-transition-content > .admin-root [class*="pt-"] {
+	padding-top: 0 !important;
+}
+
+.page-transition-content > .admin-root .pt-32,
+.page-transition-content > .admin-root .pt-20,
+.page-transition-content > .admin-root .pt-16 {
+	padding-top: 0 !important;
+}
+
+/* Remove Tailwind top-padding utilities inside admin routes to align content to top */
+.admin-main [class*="pt-"] {
+	padding-top: 0 !important;
+}
+
+/* Also target common large section padding utilities */
+.admin-main .pt-32,
+.admin-main .pt-20,
+.admin-main .pt-16 {
+	padding-top: 0 !important;
 }
 
 /* ===================================

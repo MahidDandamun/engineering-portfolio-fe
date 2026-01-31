@@ -1,17 +1,19 @@
-import { useSession } from "next-auth/react";
+"use client";
+
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export function useAdminAuthRedirect() {
-	const { data: session, status } = useSession();
+	const { user, loading } = useAuth();
 	const router = useRouter();
 	const pathname = usePathname();
 
 	useEffect(() => {
-		if (status === "loading") return;
+		if (loading) return;
 		if (!pathname?.startsWith("/admin") || pathname === "/admin/login") return;
-		if (!session) {
+		if (!user) {
 			router.replace("/admin/login");
 		}
-	}, [session, status, pathname, router]);
+	}, [user, loading, pathname, router]);
 }

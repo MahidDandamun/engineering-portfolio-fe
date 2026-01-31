@@ -11,9 +11,10 @@ interface ModalProps {
 	title?: string;
 	children: React.ReactNode;
 	className?: string;
+	skipExitAnimation?: boolean;
 }
 
-export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, className, skipExitAnimation }: ModalProps) {
 	// Handle escape key
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
@@ -30,6 +31,10 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
 			document.body.style.overflow = "unset";
 		};
 	}, [isOpen, onClose]);
+
+	// If the parent requests skipping exit animations and the modal is closed,
+	// unmount immediately instead of running the exit animation.
+	if (skipExitAnimation && !isOpen) return null;
 
 	return (
 		<AnimatePresence>

@@ -6,17 +6,20 @@ export const certificatesApi = {
 
 	getById: (id: string) => api<ApiResponse<Certificate>>(`/api/certificates/${id}`),
 
-	create: (data: CreateCertificateDTO) =>
+	create: (data: CreateCertificateDTO, signal?: AbortSignal) =>
 		api<ApiResponse<Certificate>>("/api/certificates", {
 			method: "POST",
 			body: JSON.stringify(data),
+			signal,
 		}),
 
-	update: (id: string, data: UpdateCertificateDTO) =>
+	update: (id: string, data: UpdateCertificateDTO, signal?: AbortSignal) =>
 		api<ApiResponse<Certificate>>(`/api/certificates/${id}`, {
 			method: "PUT",
 			body: JSON.stringify(data),
+			signal,
 		}),
 
-	delete: (id: string) => api<ApiResponse<null>>(`/api/certificates/${id}`, { method: "DELETE" }),
+	delete: (id: string, signal?: AbortSignal) =>
+		api<ApiResponse<null>>(`/api/certificates/${id}`, { method: "DELETE", signal }),
 };

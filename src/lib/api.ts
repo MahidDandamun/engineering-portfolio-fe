@@ -32,12 +32,19 @@ export async function api<T>(endpoint: string, options: RequestInit = {}): Promi
 
 		if (!res.ok) {
 			const errorData = await res.json().catch(() => null);
+			// Log as warning to avoid surfacing expected API validation/auth errors as console errors
 			if (errorData && Object.keys(errorData).length > 0) {
-				console.error("API Error: Response", errorData);
+				console.warn("API Warning: Response", errorData);
 			} else {
-				console.error("API Error: No error details from server");
+				console.warn("API Warning: No error details from server");
 			}
 			throw new ApiError(errorData?.message || "Request failed", res.status, errorData);
+		}
+
+		// Some endpoints (DELETE) may return 204 No Content — avoid parsing JSON in that case
+		if (res.status === 204) {
+			console.log("API Response: No Content (204)");
+			return undefined as unknown as T;
 		}
 
 		const data = await res.json();
@@ -46,7 +53,10 @@ export async function api<T>(endpoint: string, options: RequestInit = {}): Promi
 
 		return data;
 	} catch (error) {
-		console.error("API Error", error);
+		// Only log network/unexpected errors as errors
+		if (!(error instanceof ApiError)) {
+			console.error("API Error", error);
+		}
 		if (error instanceof ApiError) {
 			throw error;
 		}
